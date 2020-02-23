@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import NavBar from './components/NavBar';
-import LoginContainer from "./containers/LoginContainer";
+import NavBar from './view/components/NavBar';
+import LoginContainer from "./view/containers/LoginContainer";
 // import { useQuery } from '@apollo/react-hooks';
 // import gql from "graphql-tag";
 

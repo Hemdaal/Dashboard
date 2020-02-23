@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function LoginComponent() {
+export default function LoginComponent(props:any) {
     const classes = useStyles();
 
     return (
@@ -91,6 +91,7 @@ export default function LoginComponent() {
                         fullWidth
                         variant="contained"
                         color="primary"
+                        onClick={props.loginClick}
                         className={classes.submit}>
                         Sign In
                     </Button>
