@@ -75,8 +75,8 @@ function LoginButton(props : any) {
 export default function LoginComponent(props: any) {
     const classes = useStyles();
 
-    var email:string = ""
-    var password:string = ""
+    let email: string = "";
+    let password: string = "";
 
     function onLoginClick(event : any) {
         event.preventDefault();

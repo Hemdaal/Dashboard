@@ -18,8 +18,16 @@ class UserRepository {
     }
 
     login(email: string, password: string, callback : ((status:boolean) => void)) {
-        let url = process.env.API_URL + "/login"
-        fetch(url)
+        let body = {
+            email:email,
+            password:password
+        }
+        let url = process.env.REACT_APP_REST_API_LOCATION + "/login"
+        fetch(url,{
+            method:'post',
+            headers: {'Content-Type': 'application/json', },
+            body:JSON.stringify(body)
+        })
             .then(res => res.json())
             .then((data) => {
                 window.sessionStorage.setItem(this.authKey, data.token);
