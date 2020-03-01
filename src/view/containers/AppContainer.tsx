@@ -1,6 +1,8 @@
 import React from "react";
 import '../components/AppComponent.css';
-import AppComponent from "../components/AppComponent";
+import LoginContainer from "./LoginContainer";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import SignUpContainer from "./SignUpContainer";
 
 class AppContainer extends React.Component {
 
@@ -8,8 +10,16 @@ class AppContainer extends React.Component {
         logged_in: false
     }
 
-    render(): React.ReactNode {
-        return (<AppComponent/>);
+    render() {
+        return (
+            <BrowserRouter>
+                <div className="root">
+                    <Switch>
+                        <Route path="/signup" exact><SignUpContainer /></Route>
+                        <Route path="/login" exact><LoginContainer /></Route>
+                    </Switch>
+                </div>
+            </BrowserRouter>)
     }
 }
 

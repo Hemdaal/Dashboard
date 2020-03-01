@@ -1,18 +1,14 @@
-import React, {useState} from "react";
-import LoginComponent from "../components/LoginComponent";
 import NavBarContainer from "./NavBarContainer";
-import { useHistory } from "react-router-dom";
+import React, {useState} from "react";
+import SignUpComponent from "../components/SignUpComponent";
+import {useHistory} from "react-router-dom";
 
-function login(email:string, password:string) {
+function signUp(name: string, email: string, password: string) {
 
 }
 
-function validate(email:string, password:string) : boolean {
-
-    return false
-}
-
-export default function LoginContainer() {
+export default function SignUpContainer() {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(true);
@@ -24,20 +20,21 @@ export default function LoginContainer() {
                 <NavBarContainer/>
             </div>
             <div>
-                <LoginComponent
+                <SignUpComponent
+                    name={name}
                     email={email}
                     password={password}
                     rememberMe={rememberMe}
+                    onNameChange={setName}
                     onEmailChange={setEmail}
                     onPasswordChange={setPassword}
-                    onRememberMe={setRememberMe}
+                    onRememberMeChange={setRememberMe}
+                    onSignUpClick={() => {
+                        signUp(name, email, password)
+                    }}
                     onLoginClick={() => {
-                        login(email, password)
+                        history.push('/login')
                     }}
-                    onSignupClick={() => {
-                        history.push('/signup')
-                    }}
-                    validate={() => validate(email, password)}
                 />
             </div>
         </div>

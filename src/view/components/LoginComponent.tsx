@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -46,7 +46,19 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function LoginComponent(props: any) {
+interface LoginProps {
+    email: string
+    password: string
+    rememberMe : boolean
+    onRememberMe: ((rememberMe:boolean) => void)
+    onLoginClick: (() => void)
+    onEmailChange: ((email: string) => void)
+    onPasswordChange: ((password: string) => void)
+    onSignupClick: (() => void)
+    validate : (() => boolean)
+}
+
+export default function LoginComponent(props: LoginProps) {
     const classes = useStyles();
 
     return (
@@ -59,7 +71,11 @@ export default function LoginComponent(props: any) {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={e => {
+                    e.preventDefault()
+                    props.onLoginClick()
+                }
+                }>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -68,6 +84,8 @@ export default function LoginComponent(props: any) {
                         id="email"
                         label="Email Address"
                         name="email"
+                        value={props.email}
+                        onChange={e => props.onEmailChange(e.target.value)}
                         autoComplete="email"
                         autoFocus
                     />
@@ -77,13 +95,20 @@ export default function LoginComponent(props: any) {
                         required
                         fullWidth
                         name="password"
+                        value={props.password}
                         label="Password"
                         type="password"
                         id="password"
+                        onChange={e => props.onPasswordChange(e.target.value)}
                         autoComplete="current-password"
                     />
                     <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
+                        control={<Checkbox
+                            value="remember"
+                            color="primary"
+                            checked={props.rememberMe}
+                            onChange={e => props.onRememberMe(e.target.checked)}
+                        />}
                         label="Remember me"
                     />
                     <Button
@@ -91,17 +116,13 @@ export default function LoginComponent(props: any) {
                         fullWidth
                         variant="contained"
                         color="primary"
+                        disabled={!props.validate()}
                         className={classes.submit}>
                         Sign In
                     </Button>
                     <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
-                        </Grid>
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link href="#" variant="body2" onClick={props.onSignupClick}>
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
