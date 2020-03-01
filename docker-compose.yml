@@ -1,0 +1,19 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fronend-container
+    expose:
+      - 3000
+    ports:
+      - '3000:3000'
+    environment:
+      - DB_HOST=0.0.0.0
+    restart: always
+    volumes:
+      - ./ssl/:/etc/ssl/
+
+volumes:
+  data-volume:

@@ -2,14 +2,14 @@ import React, {useState} from "react";
 import LoginComponent from "../components/LoginComponent";
 import NavBarContainer from "./NavBarContainer";
 import { useHistory } from "react-router-dom";
+import {isValidEmail} from "../../utils/ValidationUtils";
 
 function login(email:string, password:string) {
 
 }
 
 function validate(email:string, password:string) : boolean {
-
-    return false
+    return isValidEmail(email) && password.length > 4
 }
 
 export default function LoginContainer() {
