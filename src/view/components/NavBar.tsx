@@ -1,8 +1,9 @@
 import AppBar from '@material-ui/core/AppBar';
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import {Button, IconButton, Toolbar, Typography} from "@material-ui/core";
+import {CircularProgress, IconButton, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -16,7 +17,25 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function NavBar() {
+interface NavProps {
+    isLoading: Boolean,
+    userName?: string
+}
+
+function LoginInfo(navProps : NavProps) {
+
+    if(navProps.isLoading) {
+        return <CircularProgress color="secondary"/>
+    } else if(navProps.userName){
+        return <Typography variant="h6">
+            "Welcome " + {navProps.userName}
+        </Typography>
+    } else {
+        return <Button color="inherit">Login</Button>
+    }
+}
+
+export default function NavBar(navProps: NavProps) {
 
     const classes = useStyles();
 
@@ -28,9 +47,11 @@ export default function NavBar() {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        News
+                        Hemdaal
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <div>
+                        <LoginInfo isLoading={navProps.isLoading} />
+                    </div>
                 </Toolbar>
             </AppBar>
         </div>

@@ -1,11 +1,8 @@
 import React from "react";
 import LoginComponent from "../components/LoginComponent";
-import LoginPresenter from "../../presenters/LoginPresenter";
 import LoginView from "./LoginView";
 
 class LoginContainer extends React.Component implements LoginView {
-
-    loginPresenter = new LoginPresenter(this)
 
     state = {
         is_login_progress: false,
@@ -26,7 +23,6 @@ class LoginContainer extends React.Component implements LoginView {
     }
 
     onLoginClick(email:string, password:string): void {
-        this.loginPresenter.login(email, password)
     }
 
     showFailed(): void {

@@ -46,50 +46,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function LoginButton(props : any) {
-
-    const classes = useStyles();
-
-    if (props.isLoginInProgress) {
-        return(<Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            disabled={true}
-            className={classes.submit}>
-            Please wait...
-        </Button>)
-    } else {
-        return (<Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}>
-            Sign In
-        </Button>)
-    }
-}
-
 export default function LoginComponent(props: any) {
     const classes = useStyles();
-
-    let email: string = "";
-    let password: string = "";
-
-    function onLoginClick(event : any) {
-        event.preventDefault();
-        props.onLoginClick(email, password)
-    }
-
-    function onPasswordChange(event: any) {
-        password = event.target.value
-    }
-
-    function onEmailChange(event: any) {
-        email = event.target.value
-    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -101,7 +59,7 @@ export default function LoginComponent(props: any) {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form className={classes.form} noValidate onSubmit={onLoginClick}>
+                <form className={classes.form} noValidate>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -110,7 +68,6 @@ export default function LoginComponent(props: any) {
                         id="email"
                         label="Email Address"
                         name="email"
-                        onChange={onEmailChange}
                         autoComplete="email"
                         autoFocus
                     />
@@ -123,14 +80,20 @@ export default function LoginComponent(props: any) {
                         label="Password"
                         type="password"
                         id="password"
-                        onChange={onPasswordChange}
                         autoComplete="current-password"
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}
                         label="Remember me"
                     />
-                    <LoginButton isLoginInProgress={props.isLoginInProgress} onLoginClick={onLoginClick}/>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}>
+                        Sign In
+                    </Button>
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
