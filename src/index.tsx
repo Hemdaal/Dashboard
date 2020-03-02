@@ -7,15 +7,26 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 import {HttpLink} from 'apollo-link-http';
 import {ApolloProvider} from '@apollo/react-hooks';
 import * as serviceWorker from './serviceWorker';
+import { setContext } from 'apollo-link-context';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-    uri: 'https://graphql-pokemon.now.sh/'
+    uri: process.env.REACT_APP_REST_API_LOCATION
 })
 
+
+const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem('token');
+    return {
+        headers: {
+            authorization: token ? `Bearer ${token}` : "Basic Z3Vlc3Q6Z3Vlc3Q=",
+        }
+    }
+});
+
 const client = new ApolloClient({
-    cache,
-    link
+    cache: cache,
+    link: authLink.concat(link)
 })
 
 ReactDOM.render(<ApolloProvider client={client}><AppContainer/></ApolloProvider>, document.getElementById('root'));
