@@ -36,6 +36,7 @@ export default function LoginContainer() {
     const history = useHistory();
 
     if(data?.login.token) {
+        localStorage.setItem('token', data.login.token);
         history.push('/signup')
     }
 

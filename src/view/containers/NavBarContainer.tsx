@@ -6,17 +6,28 @@ import {useQuery} from '@apollo/react-hooks';
 
 const ME_QUERY = gql`
     query me {
-        id
-        name
-        email
+        me {
+            id
+            name
+            email   
+        }
     }
-`
+`;
+
+interface UserInfo {
+    id:string
+    name:string
+    email:string
+}
 
 export default function NavBarContainer() {
 
-    const { loading, error, data } = useQuery(ME_QUERY)
+    const { loading, error, data } = useQuery<{me: UserInfo}>(ME_QUERY);
 
-    let name: string = data
+    let name = ""
+    if(data && data.me) {
+        name = data.me.name
+    }
 
     return (<NavBar isLoading={loading} userName={name}/>);
 }

@@ -28,7 +28,7 @@ function LoginInfo(navProps : NavProps) {
         return <CircularProgress color="secondary"/>
     } else if(navProps.userName){
         return <Typography variant="h6">
-            "Welcome " + {navProps.userName}
+            "Welcome "  {navProps.userName}
         </Typography>
     } else {
         return <Button color="inherit">Login</Button>
@@ -50,7 +50,7 @@ export default function NavBar(navProps: NavProps) {
                         Hemdaal
                     </Typography>
                     <div>
-                        <LoginInfo isLoading={navProps.isLoading} />
+                        <LoginInfo isLoading={navProps.isLoading} userName={navProps.userName}/>
                     </div>
                 </Toolbar>
             </AppBar>
