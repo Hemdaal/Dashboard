@@ -11,7 +11,7 @@ import { setContext } from 'apollo-link-context';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-    uri: process.env.REACT_APP_REST_API_LOCATION
+    uri: 'http://localhost:8080/graphql'
 })
 
 
@@ -20,7 +20,7 @@ const authLink = setContext((_, { headers }) => {
     if(token) {
         return {
             headers: {
-                authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`
             }
         }
     } else {
