@@ -3,6 +3,13 @@ export interface Me {
     name:string
     email:string
     createProject : CreateProjectResult
+    project : Project
+    projects : Project[]
+}
+
+export interface Project {
+    id: number
+    name : string
 }
 
 export interface CreateProjectResult {
