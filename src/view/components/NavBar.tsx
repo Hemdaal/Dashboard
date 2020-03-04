@@ -19,19 +19,24 @@ const useStyles = makeStyles(theme => ({
 
 interface NavProps {
     isLoading: Boolean,
-    userName?: string
+    userName?: string,
+    onLogout : (() => void),
+    onLogin : (() => void)
 }
 
-function LoginInfo(navProps : NavProps) {
+function LoginInfo(navProps: NavProps) {
 
-    if(navProps.isLoading) {
+    if (navProps.isLoading) {
         return <CircularProgress color="secondary"/>
-    } else if(navProps.userName){
-        return <Typography variant="h6">
-            "Welcome "  {navProps.userName}
-        </Typography>
+    } else if (navProps.userName) {
+        return <div>
+            <Typography variant="h6">
+                "Welcome " {navProps.userName}
+            </Typography>
+            <Button color="inherit" onClick={navProps.onLogout}>Logout</Button>
+        </div>
     } else {
-        return <Button color="inherit">Login</Button>
+        return <Button color="inherit" onClick={navProps.onLogin}>Login</Button>
     }
 }
 
@@ -50,7 +55,7 @@ export default function NavBar(navProps: NavProps) {
                         Hemdaal
                     </Typography>
                     <div>
-                        <LoginInfo isLoading={navProps.isLoading} userName={navProps.userName}/>
+                        <LoginInfo isLoading={navProps.isLoading} userName={navProps.userName} onLogin={navProps.onLogin} onLogout={navProps.onLogout}/>
                     </div>
                 </Toolbar>
             </AppBar>

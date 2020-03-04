@@ -3,12 +3,13 @@ import NavBarContainer from "./NavBarContainer";
 import {useHistory} from "react-router-dom";
 import DashBoardComponent from "../components/DashBoardComponent";
 import {useQuery} from "@apollo/react-hooks";
-import {ME_QUERY, UserInfo} from "../../repositories/UserRepository";
+import {ME_QUERY} from "../../repositories/UserRepository";
+import {Me} from "../../repositories/GraphQLSchema";
 
 
 export default function DashBoardContainer() {
 
-    const { loading, error, data } = useQuery<{me: UserInfo}>(ME_QUERY);
+    const { loading, error, data } = useQuery<{me: Me}>(ME_QUERY);
     const history = useHistory();
 
     let token = localStorage.getItem('token');

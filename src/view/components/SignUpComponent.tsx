@@ -51,12 +51,14 @@ interface SingUpProps {
     email: string
     password: string
     rememberMe: boolean
+    loading: boolean
     onNameChange: ((name: string) => void)
     onEmailChange: ((email: string) => void)
     onPasswordChange: ((password: string) => void)
     onRememberMeChange: ((rememberMe: boolean) => void)
     onSignUpClick: (() => void)
     onLoginClick: (() => void)
+    validate: (() => boolean)
 }
 
 export default function SignUpComponent(props: SingUpProps) {
@@ -135,8 +137,8 @@ export default function SignUpComponent(props: SingUpProps) {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        className={classes.submit}
-                    >
+                        disabled={!props.validate() || props.loading}
+                        className={classes.submit}>
                         Sign Up
                     </Button>
                     <Grid container justify="flex-end">

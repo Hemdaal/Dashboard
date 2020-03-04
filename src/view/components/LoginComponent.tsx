@@ -49,13 +49,14 @@ const useStyles = makeStyles(theme => ({
 interface LoginProps {
     email: string
     password: string
-    rememberMe : boolean
-    onRememberMe: ((rememberMe:boolean) => void)
+    rememberMe: boolean
+    loading: boolean
+    onRememberMe: ((rememberMe: boolean) => void)
     onLoginClick: (() => void)
     onEmailChange: ((email: string) => void)
     onPasswordChange: ((password: string) => void)
     onSignupClick: (() => void)
-    validate : (() => boolean)
+    validate: (() => boolean)
 }
 
 export default function LoginComponent(props: LoginProps) {
@@ -116,7 +117,7 @@ export default function LoginComponent(props: LoginProps) {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        disabled={!props.validate()}
+                        disabled={!props.validate() || props.loading}
                         className={classes.submit}>
                         Sign In
                     </Button>

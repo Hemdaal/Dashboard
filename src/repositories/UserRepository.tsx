@@ -10,8 +10,18 @@ export const ME_QUERY = gql`
     }
 `;
 
-export interface UserInfo {
-    id:string
-    name:string
-    email:string
-}
+export const LOGIN = gql`
+    mutation Login($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
+            token
+        }
+    }
+`;
+
+export const SIGNUP = gql`
+    mutation CreateUser($name: String!, $email: String!, $password: String!) {
+        createUser(name : $name, email: $email, password: $password) {
+            token
+        }
+    }
+`;
