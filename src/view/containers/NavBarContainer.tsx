@@ -1,24 +1,8 @@
 import React from "react";
 import '../components/AppComponent.css';
 import NavBar from "../components/NavBar";
-import gql from "graphql-tag";
 import {useQuery} from '@apollo/react-hooks';
-
-const ME_QUERY = gql`
-    query me {
-        me {
-            id
-            name
-            email   
-        }
-    }
-`;
-
-interface UserInfo {
-    id:string
-    name:string
-    email:string
-}
+import {ME_QUERY, UserInfo} from "../../repositories/UserRepository";
 
 export default function NavBarContainer() {
 
