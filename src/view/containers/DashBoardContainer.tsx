@@ -9,7 +9,13 @@ import {CREATE_PROJECT, PROJECT_QUERY} from "../../repositories/ProjectRepositor
 export default function DashBoardContainer() {
 
     const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-    const [CreateProjectQuery, {loading: createLoading, error: createError, data: createData}] = useMutation<{ me: Me }>(CREATE_PROJECT);
+    const [CreateProjectQuery, {loading: createLoading}] = useMutation<{ me: Me }>(CREATE_PROJECT, {
+        onCompleted(data) {
+            if (data.me.createProject) {
+                setSelectedProject(data.me.createProject)
+            }
+        }
+    });
     const {loading, error, data} = useQuery<{ me: Me }>(PROJECT_QUERY);
     const history = useHistory();
 
@@ -20,24 +26,23 @@ export default function DashBoardContainer() {
         history.push('/login')
     }
 
-    if(createData && createData.me.createProject && createData.me.createProject.id != selectedProject?.id) {
-        localStorage.setItem("selected_project_id", createData.me.createProject.id.toString())
-        setSelectedProject(createData.me.createProject)
+    if(selectedProject) {
+        localStorage.setItem("selected_project_id", selectedProject.id.toString())
     }
 
-    if (!selectedProject) {
+    if (selectedProject == null && data?.me.projects && data?.me.projects.length > 0) {
+        const selectedProjectId = localStorage.getItem("selected_project_id")
+        let isExist = false
+        data.me.projects.forEach((project => {
+            if (selectedProjectId == project.id.toString()) {
+                setSelectedProject(project)
+                isExist = true
+                return
+            }
+        }))
 
-        if (data?.me.projects != null) {
-            const selectedProjectId = localStorage.getItem("selected_project_id")
-            data.me.projects.forEach((project => {
-                if (!selectedProjectId) {
-                    setSelectedProject(project)
-                    return
-                } else if (selectedProjectId == project.id.toString()) {
-                    setSelectedProject(project)
-                    return
-                }
-            }))
+        if(!isExist) {
+            setSelectedProject(data.me.projects[0])
         }
     }
 
@@ -60,6 +65,6 @@ export default function DashBoardContainer() {
     );
 }
 
-function createProject(name: string, createProjectQuery : any) {
+function createProject(name: string, createProjectQuery: any) {
     createProjectQuery({variables: {name: name}})
 }
