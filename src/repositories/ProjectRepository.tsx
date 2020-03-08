@@ -36,6 +36,10 @@ export const CREATE_PROJECT = gql`
                 id
                 name
             }
+            projects {
+                id
+                name
+            }
         }
     }
 `;

@@ -6,17 +6,11 @@ import {useMutation, useQuery} from "@apollo/react-hooks";
 import {Me, Project} from "../../repositories/GraphQLSchema";
 import {CREATE_PROJECT, PROJECT_QUERY} from "../../repositories/ProjectRepository";
 
-
 export default function DashBoardContainer() {
 
     const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-
+    const [CreateProjectQuery, {loading: createLoading, error: createError, data: createData}] = useMutation<{ me: Me }>(CREATE_PROJECT);
     const {loading, error, data} = useQuery<{ me: Me }>(PROJECT_QUERY);
-    const [CreateProjectQuery, {loading: createLoading, error: createError, data: createData}] = useMutation<{ me: Me }>(CREATE_PROJECT, {
-        update(cache) {cache.writeQuery({query:PROJECT_QUERY, data:{}})}
-    });
-
-
     const history = useHistory();
 
     let token = localStorage.getItem('token');
@@ -24,6 +18,11 @@ export default function DashBoardContainer() {
         console.log(error)
         localStorage.removeItem('token')
         history.push('/login')
+    }
+
+    if(createData && createData.me.createProject && createData.me.createProject.id != selectedProject?.id) {
+        localStorage.setItem("selected_project_id", createData.me.createProject.id.toString())
+        setSelectedProject(createData.me.createProject)
     }
 
     if (!selectedProject) {
@@ -48,8 +47,13 @@ export default function DashBoardContainer() {
                 <NavBarContainer/>
             </div>
             <div>
-                <DashBoardComponent loading={loading || createLoading} projects={data?.me.projects} selectedProject={selectedProject}
-                                    createProject={name => createProject(name, CreateProjectQuery)}/>
+                <DashBoardComponent
+                    loading={loading || createLoading}
+                    projects={data?.me.projects}
+                    selectedProject={selectedProject}
+                    createProject={name => createProject(name, CreateProjectQuery)}
+                    setSelectedProject={setSelectedProject}
+                />
             </div>
         </div>
 
