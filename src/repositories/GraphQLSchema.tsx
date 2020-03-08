@@ -1,5 +1,5 @@
 export interface Me {
-    id:string
+    id:number
     name:string
     email:string
     createProject : CreateProjectResult

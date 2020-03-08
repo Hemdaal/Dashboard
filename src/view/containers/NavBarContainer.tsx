@@ -1,14 +1,15 @@
 import React from "react";
 import '../components/AppComponent.css';
 import NavBar from "../components/NavBar";
-import {useQuery} from '@apollo/react-hooks';
-import {ME_QUERY} from "../../repositories/UserRepository";
+import {useMutation, useQuery} from '@apollo/react-hooks';
+import {LOGOUT, ME_QUERY} from "../../repositories/UserRepository";
 import {Me} from "../../repositories/GraphQLSchema";
 import {useHistory} from "react-router-dom";
 
 export default function NavBarContainer() {
 
     const {loading, error, data} = useQuery<{ me: Me }>(ME_QUERY);
+    const [Logout, {loading: logoutLoading, error:logoutError, data:logoutData}] = useMutation<{ status: Boolean }>(LOGOUT);
     const history = useHistory();
 
     let name = ""
@@ -16,16 +17,24 @@ export default function NavBarContainer() {
         name = data.me.name
     }
 
+    if(logoutData || logoutError) {
+        localStorage.removeItem('token');
+        history.push('/login')
+    }
+
     return (
         <NavBar
-            isLoading={loading}
+            isLoading={loading || logoutLoading}
             userName={name}
             onLogin={() => {
                 history.push('/login')
             }}
             onLogout={() => {
-                localStorage.removeItem('token');
-                history.push('/login')
+                logout(Logout)
             }}
         />);
+}
+
+function logout(Logout : any) {
+    Logout({variables : {}})
 }
