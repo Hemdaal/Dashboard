@@ -5,6 +5,7 @@ import {Me} from "../../repositories/GraphQLSchema";
 import {PROJECT_DETAIL_QUERY} from "../../repositories/ProjectRepository";
 import ProjectComponent from "../components/ProjectComponent";
 import LoadingComponent from "../components/LoadingComponent";
+import ErrorComponent from "../components/ErrorComponent";
 
 interface ProjectProps {
     projectId: number
@@ -18,17 +19,17 @@ export default function ProjectContainer(props: ProjectProps) {
         variables: {projectId: props.projectId}
     });
 
-    if (data && data.me && data.me.projects) {
+    if (data && data.me && data.me.project) {
         return <ProjectComponent
             project={data?.me.project}
             onAddSoftwareClick={() => {
-                history.push('/addSoftware/' + data?.me.project.id)
+                history.push('/project/' + data?.me.project.id + "/addSoftware")
             }}/>
     } else if (loading) {
         return (
             <LoadingComponent/>
         );
     } else {
-        return <div/>
+        return <ErrorComponent />
     }
 }

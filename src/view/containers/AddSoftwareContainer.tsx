@@ -4,14 +4,14 @@ import NavBarContainer from "./NavBarContainer";
 import {useMutation} from "@apollo/react-hooks";
 import {Me} from "../../repositories/GraphQLSchema";
 import {CREATE_SOFTWARE} from "../../repositories/SoftwareComponentRepository";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
+import ErrorComponent from "../components/ErrorComponent";
 
-export default function AddSoftwareContainer(props : any) {
+export default function AddSoftwareContainer() {
 
-    const [AddSoftware, {loading, error, data}] = useMutation<{addSoftware : Me}>(CREATE_SOFTWARE);
+    const [AddSoftware, {loading, error, data}] = useMutation<{ addSoftware: Me }>(CREATE_SOFTWARE);
 
-    const projectId = props.match.params.projectId
-
+    const {projectId} = useParams()
     const [name, setName] = useState("");
     const [metricType, setMetricType] = useState("");
     const [collectorType, setCollectorType] = useState("");
@@ -21,39 +21,51 @@ export default function AddSoftwareContainer(props : any) {
 
     const validate = () => {
         alert(collectorType)
-        if(name.length < 2) return false
-        if(token.length < 2) return false
-        if(url.length < 2) return false
+        if (name.length < 2) return false
+        if (token.length < 2) return false
+        if (url.length < 2) return false
 
         return true
     }
 
     const addClicked = () => {
-        AddSoftware({variables : {projectId: projectId, name:name, collectorType:collectorType, resourceUrl:url, token:token}})
+        AddSoftware({
+            variables: {
+                projectId: projectId,
+                name: name,
+                collectorType: collectorType,
+                resourceUrl: url,
+                token: token
+            }
+        })
     }
 
-    if(data && data.addSoftware && data.addSoftware.project.createSoftwareComponent.id) {
+    if (data && data.addSoftware && data.addSoftware.project.createSoftwareComponent.id) {
         history.push('/software/' + projectId + '/' + data.addSoftware.project.createSoftwareComponent.id.toString() + '/')
     }
 
-    return (
-        <div>
-            <NavBarContainer/>
-            <AddSoftwareComponent
-                name={name}
-                metricType={metricType}
-                collectorType={collectorType}
-                token={token}
-                resourceUrl={url}
-                isLoading={loading}
-                onNameChange={setName}
-                onMetricTypeChange={setMetricType}
-                onCollectorTypeChange={setCollectorType}
-                onTokenChange={setToken}
-                onResourceUrlChange={setUrl}
-                validate={validate}
-                onAddClicked={addClicked}
-            />
-        </div>
-    );
+    if (projectId) {
+        return (
+            <div>
+                <NavBarContainer/>
+                <AddSoftwareComponent
+                    name={name}
+                    metricType={metricType}
+                    collectorType={collectorType}
+                    token={token}
+                    resourceUrl={url}
+                    isLoading={loading}
+                    onNameChange={setName}
+                    onMetricTypeChange={setMetricType}
+                    onCollectorTypeChange={setCollectorType}
+                    onTokenChange={setToken}
+                    onResourceUrlChange={setUrl}
+                    validate={validate}
+                    onAddClicked={addClicked}
+                />
+            </div>
+        );
+    } else {
+        return (<ErrorComponent/>);
+    }
 }

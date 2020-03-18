@@ -39,7 +39,6 @@ export default function ProjectComponent(props: ProjectProps) {
         </Card>
     );
 
-
     if (props.project && props.project.softwareComponents) {
 
         const softwareItems = props.project.softwareComponents.map((softwareComponent) => {

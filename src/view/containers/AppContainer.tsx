@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import SignUpContainer from "./SignUpContainer";
 import DashboardContainer from "./DashboardContainer";
 import AddSoftwareContainer from "./AddSoftwareContainer";
+import ErrorComponent from "../components/ErrorComponent";
 
 class AppContainer extends React.Component {
 
@@ -17,12 +18,13 @@ class AppContainer extends React.Component {
             <BrowserRouter>
                 <div className="root">
                     <Switch>
+                        <Route path="/project/:projectId/addSoftware" component={AddSoftwareContainer} exact/>
                         <Route path="/project/:projectId" component={DashboardContainer}/>
-                        <Route path="/project/" component={DashboardContainer}/>
-                        <Route path="/" exact><DashboardContainer/></Route>
+                        <Route path="/project" component={DashboardContainer}/>
                         <Route path="/signup" exact><SignUpContainer/></Route>
                         <Route path="/login" exact><LoginContainer/></Route>
-                        <Route path="/addSoftware/:projectId" component={AddSoftwareContainer} exact/>
+                        <Route path="/" exact><DashboardContainer/></Route>
+                        <Route path="*" exact><ErrorComponent/></Route>
                     </Switch>
                 </div>
             </BrowserRouter>)
