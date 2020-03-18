@@ -7,6 +7,7 @@ import {Me, Project} from "../../repositories/GraphQLSchema";
 import {CREATE_PROJECT, PROJECT_QUERY} from "../../repositories/ProjectRepository";
 import ProjectContainer from "./ProjectContainer";
 import LoadingComponent from "../components/LoadingComponent";
+import ErrorComponent from "../components/ErrorComponent";
 
 const selectedProjectIdKey = "selected_project_id"
 
@@ -53,7 +54,14 @@ export default function DashboardContainer(this: any) {
         history.push("/project/" + project.id.toString())
     }
 
-    if (data && data.me && data.me.projects && projectId) {
+    if (loading) {
+        return (
+            <div>
+                <NavBarContainer/>
+                <LoadingComponent/>
+            </div>
+        );
+    } else if (data && data.me && data.me.projects && projectId) {
         return <div>
             <NavBarContainer/>
             <ProjectSelectionComponent
@@ -69,7 +77,7 @@ export default function DashboardContainer(this: any) {
         return (
             <div>
                 <NavBarContainer/>
-                <LoadingComponent/>
+                <ErrorComponent/>
             </div>
         );
     }

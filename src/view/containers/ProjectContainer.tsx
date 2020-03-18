@@ -19,17 +19,17 @@ export default function ProjectContainer(props: ProjectProps) {
         variables: {projectId: props.projectId}
     });
 
-    if (data && data.me && data.me.project) {
+    if (loading) {
+        return (
+            <LoadingComponent/>
+        );
+    } else if (data && data.me && data.me.project) {
         return <ProjectComponent
             project={data?.me.project}
             onAddSoftwareClick={() => {
                 history.push('/project/' + data?.me.project.id + "/addSoftware")
             }}/>
-    } else if (loading) {
-        return (
-            <LoadingComponent/>
-        );
     } else {
-        return <ErrorComponent />
+        return <ErrorComponent/>
     }
 }
