@@ -7,17 +7,17 @@ import {LoginResult} from "../../repositories/GraphQLSchema";
 import {SIGNUP} from "../../repositories/UserRepository";
 import {isValidEmail} from "../../utils/ValidationUtils";
 
-function signUp(name: string, email: string, password: string, Signup : any) {
-    Signup({variables : {name:name, email:email, password:password}})
+function signUp(name: string, email: string, password: string, Signup: any) {
+    Signup({variables: {name: name, email: email, password: password}})
 }
 
-function validate(name : string, email: string, password: string): boolean {
+function validate(name: string, email: string, password: string): boolean {
     return name.length > 3 && isValidEmail(email) && password.length > 4
 }
 
 export default function SignUpContainer() {
 
-    const [Signup, {loading, error, data}] = useMutation<{createUser : LoginResult}>(SIGNUP);
+    const [Signup, {loading, error, data}] = useMutation<{ createUser: LoginResult }>(SIGNUP);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -25,7 +25,7 @@ export default function SignUpContainer() {
     const [rememberMe, setRememberMe] = useState(true);
     const history = useHistory();
 
-    if(data && data.createUser && data.createUser.token) {
+    if (data && data.createUser && data.createUser.token) {
         localStorage.setItem('token', data.createUser.token);
         history.push('/')
     }

@@ -11,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 const useStyles = makeStyles(theme => ({
     menuButton: {
         margin: theme.spacing(2),
-        variant:"outlined",
+        variant: "outlined",
     },
     title: {
         flexGrow: 1,
@@ -22,11 +22,11 @@ export interface DashboardProps {
     loading: boolean
     projects?: Project[]
     selectedProject?: Project | null
-    setSelectedProject : ((project : Project) => void)
-    createProject : ((projectName:string) => void)
+    setSelectedProject: ((project: Project) => void)
+    createProject: ((projectName: string) => void)
 }
 
-export default function DashBoardComponent(props: DashboardProps) {
+export default function ProjectSelectionComponent(props: DashboardProps) {
 
     const classes = useStyles();
 
@@ -42,7 +42,7 @@ export default function DashBoardComponent(props: DashboardProps) {
     };
 
     if (props.loading) {
-        return <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
+        return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
             <CircularProgress/>
         </div>
     }
@@ -60,7 +60,7 @@ export default function DashBoardComponent(props: DashboardProps) {
         props.createProject(createProjectName)
     };
 
-    if (props.projects && props.selectedProject) {
+    if (props.projects) {
         const menus = props.projects.map((project) => {
             return <MenuItem onClick={event => {
                 handleClose()
@@ -68,12 +68,22 @@ export default function DashBoardComponent(props: DashboardProps) {
             }} selected={project.id === props.selectedProject?.id}>{project.name}</MenuItem>
         });
 
+        const projectSelectionButton = () => {
+            if (props.selectedProject) {
+                return (<Button className={classes.menuButton} variant="outlined" color="primary" onClick={handleClick}>
+                    {props.selectedProject?.name} &#8964;
+                </Button>)
+            } else {
+                return (<Button className={classes.menuButton} variant="outlined" color="primary" onClick={handleClick}>
+                    Select Project &#8964;
+                </Button>)
+            }
+        }
+
         return (
             <div>
                 <div>
-                    <Button className={classes.menuButton} variant="outlined" color="primary" onClick={handleClick}>
-                        {props.selectedProject?.name} &#8964;
-                    </Button>
+                    {projectSelectionButton()}
                     <Menu
                         id="simple-menu"
                         anchorEl={anchorEl}
@@ -89,14 +99,14 @@ export default function DashBoardComponent(props: DashboardProps) {
                         {ProjectDialog(open, handleClose, createProjectName, setCreateProjectName, handleDialogClose, handleDialogCreateClose)}
                     </Menu>
                 </div>
-
             </div>
         );
     } else {
         return (
             <div>
-                <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
-                    <Button className={classes.menuButton} variant="contained" color="primary" onClick={handleDialogClickOpen}>
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+                    <Button className={classes.menuButton} variant="contained" color="primary"
+                            onClick={handleDialogClickOpen}>
                         Create Project
                     </Button>
                     {ProjectDialog(open, handleClose, createProjectName, setCreateProjectName, handleDialogClose, handleDialogCreateClose)}
@@ -106,7 +116,7 @@ export default function DashBoardComponent(props: DashboardProps) {
     }
 }
 
-function ProjectDialog(open:any, handleClose:any, createProjectName:any, setCreateProjectName:any, handleDialogClose:any, handleDialogCreateClose:any) {
+function ProjectDialog(open: any, handleClose: any, createProjectName: any, setCreateProjectName: any, handleDialogClose: any, handleDialogCreateClose: any) {
     return <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Create Project</DialogTitle>
         <DialogContent>

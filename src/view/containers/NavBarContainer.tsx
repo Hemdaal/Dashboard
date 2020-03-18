@@ -9,7 +9,7 @@ import {useHistory} from "react-router-dom";
 export default function NavBarContainer() {
 
     const {loading, error, data} = useQuery<{ me: Me }>(ME_QUERY);
-    const [Logout, {loading: logoutLoading, error:logoutError, data:logoutData}] = useMutation<{ status: Boolean }>(LOGOUT);
+    const [Logout, {loading: logoutLoading, error: logoutError, data: logoutData}] = useMutation<{ status: Boolean }>(LOGOUT);
     const history = useHistory();
 
     let name = ""
@@ -17,7 +17,7 @@ export default function NavBarContainer() {
         name = data.me.name
     }
 
-    if(logoutData || logoutError) {
+    if (logoutData || logoutError) {
         localStorage.removeItem('token');
         history.push('/login')
     }
@@ -35,6 +35,6 @@ export default function NavBarContainer() {
         />);
 }
 
-function logout(Logout : any) {
-    Logout({variables : {}})
+function logout(Logout: any) {
+    Logout({variables: {}})
 }

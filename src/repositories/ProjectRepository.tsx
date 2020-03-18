@@ -13,7 +13,7 @@ export const PROJECT_QUERY = gql`
 `;
 
 export const PROJECT_DETAIL_QUERY = gql`
-    query me($projectId : Int!) {
+    query me($projectId : Long!) {
         me {
             id
             project(projectId: $projectId) {

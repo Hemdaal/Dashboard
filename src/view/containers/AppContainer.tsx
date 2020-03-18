@@ -1,9 +1,10 @@
 import React from "react";
 import '../components/AppComponent.css';
 import LoginContainer from "./LoginContainer";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 import SignUpContainer from "./SignUpContainer";
-import DashBoardContainer from "./DashBoardContainer";
+import DashboardContainer from "./DashboardContainer";
+import AddSoftwareContainer from "./AddSoftwareContainer";
 
 class AppContainer extends React.Component {
 
@@ -16,9 +17,12 @@ class AppContainer extends React.Component {
             <BrowserRouter>
                 <div className="root">
                     <Switch>
-                        <Route path="/" exact><DashBoardContainer /></Route>
-                        <Route path="/signup" exact><SignUpContainer /></Route>
-                        <Route path="/login" exact><LoginContainer /></Route>
+                        <Route path="/project/:projectId" component={DashboardContainer}/>
+                        <Route path="/project/" component={DashboardContainer}/>
+                        <Route path="/" exact><DashboardContainer/></Route>
+                        <Route path="/signup" exact><SignUpContainer/></Route>
+                        <Route path="/login" exact><LoginContainer/></Route>
+                        <Route path="/addSoftware/:projectId" component={AddSoftwareContainer} exact/>
                     </Switch>
                 </div>
             </BrowserRouter>)
