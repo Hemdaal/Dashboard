@@ -9,18 +9,23 @@ import ErrorComponent from "../components/ErrorComponent";
 
 export default function AddSoftwareContainer() {
 
-    const [AddSoftware, {loading, error, data}] = useMutation<{ addSoftware: Me }>(CREATE_SOFTWARE);
+    const [AddSoftware, {loading, error, data}] = useMutation<{ me: Me }>(CREATE_SOFTWARE, {
+        onCompleted(data) {
+            if (data && data.me && data.me.project.createSoftwareComponent.id) {
+                history.push('/project/' + projectId + '/software/' + data.me.project.createSoftwareComponent.id.toString())
+            }
+        }
+    });
 
     const {projectId} = useParams()
     const [name, setName] = useState("");
-    const [metricType, setMetricType] = useState("");
-    const [collectorType, setCollectorType] = useState("");
+    const [metricType, setMetricType] = useState("REPO");
+    const [collectorType, setCollectorType] = useState("GITHUB_REPO");
     const [token, setToken] = useState("");
     const [url, setUrl] = useState("");
     const history = useHistory();
 
     const validate = () => {
-        alert(collectorType)
         if (name.length < 2) return false
         if (token.length < 2) return false
         if (url.length < 2) return false
@@ -38,10 +43,6 @@ export default function AddSoftwareContainer() {
                 token: token
             }
         })
-    }
-
-    if (data && data.addSoftware && data.addSoftware.project.createSoftwareComponent.id) {
-        history.push('/software/' + projectId + '/' + data.addSoftware.project.createSoftwareComponent.id.toString() + '/')
     }
 
     if (projectId) {

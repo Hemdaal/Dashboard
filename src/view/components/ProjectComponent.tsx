@@ -1,25 +1,25 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import {Card, CardActions} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {Paper, Typography} from "@material-ui/core";
 import {Project} from "../../repositories/GraphQLSchema";
 import SoftwareItemComponent from "./SoftwareItemComponent";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
-    },
-    avatar: {
-        color: 'primary'
-    }
-}));
-
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            '& > *': {
+                margin: theme.spacing(1),
+                width: theme.spacing(16),
+                height: theme.spacing(16),
+            },
+        },
+        title: {
+            justifyContent: 'center'
+        },
+    }),
+);
 interface ProjectProps {
     project: Project,
     onAddSoftwareClick: (() => void)
@@ -30,13 +30,11 @@ export default function ProjectComponent(props: ProjectProps) {
     const classes = useStyles();
 
     const createSoftware = (
-        <Card className={classes.root}>
-            <CardActions>
-                <Button size="large" onClick={() => {
-                    props.onAddSoftwareClick()
-                }}>Add Software Component</Button>
-            </CardActions>
-        </Card>
+        <Paper elevation={3} className={classes.title} color="textSecondary" onClick={() => {
+            props.onAddSoftwareClick()
+        }}>
+            Add Software Component
+        </Paper>
     );
 
     if (props.project && props.project.softwareComponents) {

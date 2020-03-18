@@ -44,6 +44,15 @@ export default function AddSoftwareComponent(props: AddSoftwareProps) {
 
     const classes = useStyles();
 
+    const onMetricTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        alert(event.target.value)
+        props.onMetricTypeChange(event.target.value as string);
+    };
+
+    const onCollectorTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        props.onCollectorTypeChange(event.target.value as string);
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
@@ -63,7 +72,7 @@ export default function AddSoftwareComponent(props: AddSoftwareProps) {
             <Select
                 native
                 value={props.metricType}
-                onChange={e => props.onMetricTypeChange(e.target.value as string)}
+                onChange={onMetricTypeChange}
                 inputProps={{
                     name: 'metric-type',
                     id: 'metric-type',
@@ -74,9 +83,7 @@ export default function AddSoftwareComponent(props: AddSoftwareProps) {
             <Select
                 native
                 value={props.collectorType}
-                onChange={e => {
-                    props.onCollectorTypeChange(e.target.value as string)
-                }}
+                onChange={onCollectorTypeChange}
                 inputProps={{
                     name: 'collector-type',
                     id: 'collector-type',
