@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import LoginComponent from "../components/LoginComponent";
-import NavBarContainer from "./NavBarContainer";
 import {useHistory} from "react-router-dom";
-import {isValidEmail} from "../../utils/ValidationUtils";
+import {isValidEmail} from "../../../utils/ValidationUtils";
 import {useMutation} from '@apollo/react-hooks';
-import {LOGIN} from "../../repositories/UserRepository";
-import {LoginResult} from "../../repositories/GraphQLSchema";
+import {LOGIN} from "../../../repositories/UserRepository";
+import {LoginResult} from "../../../repositories/GraphQLSchema";
+import NavBarContainer from "../../shared/NavBarContainer";
+import LoginComponent from "./LoginComponent";
 
 function login(email: string, password: string, Login: any) {
     Login({variables: {email: email, password: password}})

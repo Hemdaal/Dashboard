@@ -1,6 +1,6 @@
 import React from "react";
-import '../components/AppComponent.css';
-import NavBar from "../components/NavBar";
+import '../AppComponent.css';
+import NavBar from "./NavBar";
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {LOGOUT, ME_QUERY} from "../../repositories/UserRepository";
 import {Me} from "../../repositories/GraphQLSchema";
@@ -12,7 +12,7 @@ export default function NavBarContainer() {
     const [Logout, {loading: logoutLoading, error: logoutError, data: logoutData}] = useMutation<{ status: Boolean }>(LOGOUT);
     const history = useHistory();
 
-    let name = ""
+    let name = "";
     if (data && data.me) {
         name = data.me.name
     }

@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import AddSoftwareComponent from "../components/AddSoftwareComponent";
-import NavBarContainer from "./NavBarContainer";
 import {useMutation} from "@apollo/react-hooks";
-import {Me} from "../../repositories/GraphQLSchema";
-import {CREATE_SOFTWARE} from "../../repositories/SoftwareComponentRepository";
+import {Me} from "../../../repositories/GraphQLSchema";
+import {CREATE_SOFTWARE} from "../../../repositories/SoftwareComponentRepository";
 import {useHistory, useParams} from "react-router-dom";
-import ErrorComponent from "../components/ErrorComponent";
+import ErrorComponent from "../../shared/ErrorComponent";
+import NavBarContainer from "../../shared/NavBarContainer";
+import AddSoftwareComponent from "./AddSoftwareComponent";
 
 export default function AddSoftwareContainer() {
 
@@ -17,7 +17,7 @@ export default function AddSoftwareContainer() {
         }
     });
 
-    const {projectId} = useParams()
+    const {projectId} = useParams();
     const [name, setName] = useState("");
     const [metricType, setMetricType] = useState("REPO");
     const [collectorType, setCollectorType] = useState("GITHUB_REPO");
@@ -26,12 +26,10 @@ export default function AddSoftwareContainer() {
     const history = useHistory();
 
     const validate = () => {
-        if (name.length < 2) return false
-        if (token.length < 2) return false
-        if (url.length < 2) return false
-
-        return true
-    }
+        if (name.length < 2) return false;
+        if (token.length < 2) return false;
+        return url.length >= 2;
+    };
 
     const addClicked = () => {
         AddSoftware({
@@ -43,7 +41,7 @@ export default function AddSoftwareContainer() {
                 token: token
             }
         })
-    }
+    };
 
     if (projectId) {
         return (

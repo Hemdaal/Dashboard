@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import AppContainer from './view/containers/AppContainer';
 import {ApolloClient} from 'apollo-client';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {HttpLink} from 'apollo-link-http';
@@ -13,11 +12,12 @@ import {createMuiTheme} from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import blue from '@material-ui/core/colors/blue';
 import deepOrange from '@material-ui/core/colors/deepOrange';
+import AppContainer from "./view/AppContainer";
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
     uri: 'http://localhost:8080/graphql'
-})
+});
 
 
 const theme = createMuiTheme({
@@ -56,7 +56,7 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 const client = new ApolloClient({
     cache: cache,
     link: authLink.concat(errorLink).concat(link)
-})
+});
 
 ReactDOM.render(
     <ApolloProvider client={client}>

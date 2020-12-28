@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {Paper, Typography} from "@material-ui/core";
-import {Project} from "../../repositories/GraphQLSchema";
-import SoftwareItemComponent from "./SoftwareItemComponent";
+import {Project} from "../../../repositories/GraphQLSchema";
+import SoftwareItemComponent from "../../shared/softwareItem/SoftwareItemComponent";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

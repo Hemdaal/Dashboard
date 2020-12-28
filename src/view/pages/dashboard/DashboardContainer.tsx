@@ -1,15 +1,15 @@
 import React from "react";
-import NavBarContainer from "./NavBarContainer";
 import {useHistory, useParams} from "react-router-dom";
-import ProjectSelectionComponent from "../components/ProjectSelectionComponent";
+import ProjectSelectionComponent from "../../shared/ProjectSelectionComponent";
 import {useMutation, useQuery} from "@apollo/react-hooks";
-import {Me, Project} from "../../repositories/GraphQLSchema";
-import {CREATE_PROJECT, PROJECT_QUERY} from "../../repositories/ProjectRepository";
-import ProjectContainer from "./ProjectContainer";
-import LoadingComponent from "../components/LoadingComponent";
-import ErrorComponent from "../components/ErrorComponent";
+import {Me, Project} from "../../../repositories/GraphQLSchema";
+import {CREATE_PROJECT, PROJECT_QUERY} from "../../../repositories/ProjectRepository";
+import LoadingComponent from "../../shared/LoadingComponent";
+import ErrorComponent from "../../shared/ErrorComponent";
+import NavBarContainer from "../../shared/NavBarContainer";
+import ProjectContainer from "../project/ProjectContainer";
 
-const selectedProjectIdKey = "selected_project_id"
+const selectedProjectIdKey = "selected_project_id";
 
 export default function DashboardContainer(this: any) {
 
@@ -22,12 +22,12 @@ export default function DashboardContainer(this: any) {
     });
     const {loading, error, data} = useQuery<{ me: Me }>(PROJECT_QUERY);
     const history = useHistory();
-    const {projectId} = useParams()
+    const {projectId} = useParams();
 
     let token = localStorage.getItem('token');
     if (token == null || error) {
-        console.log(error)
-        localStorage.removeItem('token')
+        console.log(error);
+        localStorage.removeItem('token');
         history.push('/login')
     }
 
@@ -41,18 +41,18 @@ export default function DashboardContainer(this: any) {
         }
     }
 
-    let selectedProject = null
+    let selectedProject = null;
     data?.me.projects.forEach((project => {
         if (projectId === project.id.toString()) {
-            selectedProject = project
+            selectedProject = project;
             return
         }
-    }))
+    }));
 
     const setSelectedProject = (project: Project) => {
-        localStorage.setItem(selectedProjectIdKey, project.id.toString())
+        localStorage.setItem(selectedProjectIdKey, project.id.toString());
         history.push("/project/" + project.id.toString())
-    }
+    };
 
     if (loading) {
         return (

@@ -1,18 +1,18 @@
 import React from "react";
-import '../components/AppComponent.css';
-import LoginContainer from "./LoginContainer";
+import './AppComponent.css';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import SignUpContainer from "./SignUpContainer";
-import DashboardContainer from "./DashboardContainer";
-import AddSoftwareContainer from "./AddSoftwareContainer";
-import ErrorComponent from "../components/ErrorComponent";
-import SoftwareContainer from "./SoftwareContainer";
+import SoftwareContainer from "./pages/software/SoftwareContainer";
+import AddSoftwareContainer from "./pages/addSoftware/AddSoftwareContainer";
+import DashboardContainer from "./pages/dashboard/DashboardContainer";
+import SignUpContainer from "./pages/signup/SignUpContainer";
+import LoginContainer from "./pages/login/LoginContainer";
+import ErrorComponent from "./shared/ErrorComponent";
 
 class AppContainer extends React.Component {
 
     state = {
         logged_in: false
-    }
+    };
 
     render() {
         return (

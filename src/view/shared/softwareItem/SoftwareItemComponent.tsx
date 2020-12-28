@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {Paper, Typography} from "@material-ui/core";
-import {SoftwareComponent} from "../../repositories/GraphQLSchema";
+import {SoftwareComponent} from "../../../repositories/GraphQLSchema";
 
 const useStyles = makeStyles(theme => ({
     root: {

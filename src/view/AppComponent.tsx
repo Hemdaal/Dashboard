@@ -1,6 +1,6 @@
 import React from 'react';
-import LoginContainer from "../containers/LoginContainer";
-import NavBarContainer from "../containers/NavBarContainer";
+import NavBarContainer from "./shared/NavBarContainer";
+import LoginContainer from "./pages/login/LoginContainer";
 
 export default function AppComponent() {
 

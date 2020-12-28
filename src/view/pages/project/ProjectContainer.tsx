@@ -1,11 +1,11 @@
 import React from "react";
 import {useHistory} from "react-router-dom";
 import {useQuery} from "@apollo/react-hooks";
-import {Me} from "../../repositories/GraphQLSchema";
-import {PROJECT_DETAIL_QUERY} from "../../repositories/ProjectRepository";
-import ProjectComponent from "../components/ProjectComponent";
-import LoadingComponent from "../components/LoadingComponent";
-import ErrorComponent from "../components/ErrorComponent";
+import {Me} from "../../../repositories/GraphQLSchema";
+import {PROJECT_DETAIL_QUERY} from "../../../repositories/ProjectRepository";
+import ProjectComponent from "./ProjectComponent";
+import LoadingComponent from "../../shared/LoadingComponent";
+import ErrorComponent from "../../shared/ErrorComponent";
 
 interface ProjectProps {
     projectId: number

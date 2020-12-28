@@ -1,6 +1,6 @@
 import React from "react";
-import ErrorComponent from "../components/ErrorComponent";
-import NavBarContainer from "./NavBarContainer";
+import ErrorComponent from "../../shared/ErrorComponent";
+import NavBarContainer from "../../shared/NavBarContainer";
 
 export default function SoftwareContainer() {
 
