@@ -1,31 +1,20 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
-import {useMutation} from "@apollo/react-hooks";
-import {LoginResult} from "../../../repositories/GraphQLSchema";
-import {SIGNUP} from "../../../repositories/UserRepository";
 import {isValidEmail} from "../../../utils/ValidationUtils";
 import SignUpPageComponent from "./SignUpPageComponent";
-
-function signUp(name: string, email: string, password: string, Signup: any) {
-    Signup({variables: {name: name, email: email, password: password}})
-}
-
-function validate(name: string, email: string, password: string): boolean {
-    return name.length > 3 && isValidEmail(email) && password.length > 4
-}
+import {User} from "../../../models/User";
+import {System} from "../../../models/System";
 
 export default function SignUpPageContainer() {
-
-    const [Signup, {loading, error, data}] = useMutation<{ createUser: LoginResult }>(SIGNUP);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(true);
     const history = useHistory();
+    const {error, loading, user, signup} = useSignup();
 
-    if (data && data.createUser && data.createUser.token) {
-        localStorage.setItem('token', data.createUser.token);
+    if (user) {
         history.push('/')
     }
 
@@ -41,7 +30,7 @@ export default function SignUpPageContainer() {
             onPasswordChange={setPassword}
             onRememberMeChange={setRememberMe}
             onSignUpClick={() => {
-                signUp(name, email, password, Signup)
+                signup(name, email, password)
             }}
             onLoginClick={() => {
                 history.push('/login')
@@ -49,4 +38,28 @@ export default function SignUpPageContainer() {
             validate={() => validate(name, email, password)}
         />
     );
+}
+
+function useSignup() {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [user, setUser] = useState<User | null>(null);
+    const system = new System();
+
+    function signup(name: string, email: string, password: string) {
+        setLoading(true);
+        system.signup(name, email, password).then(user => {
+            setLoading(false);
+            setUser(user);
+        }).catch(error => {
+            setLoading(false);
+            setError(error);
+        });
+    }
+
+    return {error, loading, user, signup};
+}
+
+function validate(name: string, email: string, password: string): boolean {
+    return name.length > 3 && isValidEmail(email) && password.length > 4
 }

@@ -36,15 +36,23 @@ export const SIGNUP = gql`
 
 export class UserRepository extends BaseRepository {
 
-    login(email: string, password: string): Promise<string> {
+    async login(email: string, password: string): Promise<string> {
         return this.call(LOGIN, {email: email, password: password})
     }
 
-    getUser(): Promise<User> {
+    async signup(name: string, email: string, password: string): Promise<string> {
+        return this.call(SIGNUP, {name: name, email: email, password: password})
+    }
+
+    async getUser(): Promise<User> {
         return this.call<User>(ME_QUERY, {});
     }
 
     saveUserToken(token: string) {
         localStorage.setItem('token', token);
+    }
+
+    resetUserToken() {
+        localStorage.setItem('token', '')
     }
 }
