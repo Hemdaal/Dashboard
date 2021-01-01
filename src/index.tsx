@@ -12,7 +12,7 @@ import {createMuiTheme} from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import blue from '@material-ui/core/colors/blue';
 import deepOrange from '@material-ui/core/colors/deepOrange';
-import AppContainer from "./view/AppContainer";
+import AppContainer from "./view/app/AppContainer";
 
 const cache = new InMemoryCache();
 const link = new HttpLink({

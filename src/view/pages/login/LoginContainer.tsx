@@ -4,7 +4,6 @@ import {isValidEmail} from "../../../utils/ValidationUtils";
 import {useMutation} from '@apollo/react-hooks';
 import {LOGIN} from "../../../repositories/UserRepository";
 import {LoginResult} from "../../../repositories/GraphQLSchema";
-import NavBarContainer from "../../shared/NavBarContainer";
 import LoginComponent from "./LoginComponent";
 
 function login(email: string, password: string, Login: any) {
@@ -29,29 +28,21 @@ export default function LoginContainer() {
     }
 
     return (
-        <div>
-            <div>
-                <NavBarContainer/>
-            </div>
-            <div>
-                <LoginComponent
-                    email={email}
-                    password={password}
-                    rememberMe={rememberMe}
-                    loading={loading}
-                    onEmailChange={setEmail}
-                    onPasswordChange={setPassword}
-                    onRememberMe={setRememberMe}
-                    onLoginClick={() => {
-                        login(email, password, Login)
-                    }}
-                    onSignupClick={() => {
-                        history.push('/signup')
-                    }}
-                    validate={() => validate(email, password)}
-                />
-            </div>
-        </div>
-
+        <LoginComponent
+            email={email}
+            password={password}
+            rememberMe={rememberMe}
+            loading={loading}
+            onEmailChange={setEmail}
+            onPasswordChange={setPassword}
+            onRememberMe={setRememberMe}
+            onLoginClick={() => {
+                login(email, password, Login)
+            }}
+            onSignupClick={() => {
+                history.push('/signup')
+            }}
+            validate={() => validate(email, password)}
+        />
     );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import '../AppComponent.css';
+import '../app/AppComponent.css';
 import NavBar from "./NavBar";
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {LOGOUT, ME_QUERY} from "../../repositories/UserRepository";
