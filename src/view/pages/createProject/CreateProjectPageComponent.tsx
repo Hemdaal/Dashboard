@@ -7,7 +7,7 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import AddSoftwareFormContainer from "../../shared/addSoftwareForm/AddSoftwareFormContainer";
 import Software from "../../../models/Software";
-import NavBarContainer from "../../shared/NavBarContainer";
+import NavBarContainer from "../../shared/navbar/NavBarContainer";
 
 const useStyles = makeStyles(theme => ({
     root: {

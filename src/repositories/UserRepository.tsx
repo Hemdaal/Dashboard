@@ -1,10 +1,10 @@
-import gql from "graphql-tag";
 import {User} from "../models/User";
 import {BaseRepository} from "./BaseRepository";
+import {AuthInfo} from "../models/AuthInfo";
 
-export const ME_QUERY = gql`
-    query me {
-        me {
+export const USER_QUERY = `
+    query user {
+        user {
             id
             name
             email
@@ -12,7 +12,7 @@ export const ME_QUERY = gql`
     }
 `;
 
-export const LOGIN = gql`
+export const LOGIN = `
     mutation Login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
             token
@@ -20,13 +20,13 @@ export const LOGIN = gql`
     }
 `;
 
-export const LOGOUT = gql`
+export const LOGOUT = `
     mutation Logout {
         logout
     }
 `;
 
-export const SIGNUP = gql`
+export const SIGNUP = `
     mutation CreateUser($name: String!, $email: String!, $password: String!) {
         createUser(name : $name, email: $email, password: $password) {
             token
@@ -36,16 +36,31 @@ export const SIGNUP = gql`
 
 export class UserRepository extends BaseRepository {
 
-    async login(email: string, password: string): Promise<string> {
-        return this.call(LOGIN, {email: email, password: password})
+    async login(email: string, password: string): Promise<AuthInfo> {
+        return new Promise<AuthInfo>((resolve, reject) => {
+            this.call(LOGIN, {email: email, password: password}).then(response => {
+                resolve(response.data.login);
+            }).catch(error => {
+                console.error(error);
+                return reject(error);
+            })
+        });
     }
 
-    async signup(name: string, email: string, password: string): Promise<string> {
-        return this.call(SIGNUP, {name: name, email: email, password: password})
+    async signup(name: string, email: string, password: string): Promise<AuthInfo> {
+        return new Promise<AuthInfo>((resolve, reject) => {
+            this.call(SIGNUP, {name: name, email: email, password: password}).then(response => {
+                resolve(response.data.createUser)
+            }).catch(error => reject(error))
+        });
     }
 
     async getUser(): Promise<User> {
-        return this.call<User>(ME_QUERY, {});
+        return new Promise<User>((resolve, reject) => {
+            this.call(USER_QUERY, {}).then(response => {
+                resolve(response.data.user)
+            }).catch(error => reject(error))
+        });
     }
 
     saveUserToken(token: string) {

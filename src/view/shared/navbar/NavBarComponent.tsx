@@ -2,7 +2,6 @@ import AppBar from '@material-ui/core/AppBar';
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {Avatar, Badge, CircularProgress, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
-import MenuIcon from '@material-ui/icons/Menu';
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
@@ -61,7 +60,7 @@ function LoginInfo(navProps: NavProps) {
     }
 }
 
-export default function NavBar(navProps: NavProps) {
+export default function NavBarComponent(navProps: NavProps) {
 
     const classes = useStyles();
 
