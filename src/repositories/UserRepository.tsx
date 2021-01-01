@@ -63,6 +63,15 @@ export class UserRepository extends BaseRepository {
         });
     }
 
+    async logout(): Promise<boolean> {
+        this.resetUserToken();
+        return new Promise<boolean>((resolve, reject) => {
+            this.call(LOGOUT, {}).then(response => {
+                resolve(true)
+            }).catch(error => resolve(true))
+        });
+    }
+
     saveUserToken(token: string) {
         localStorage.setItem('token', token);
     }

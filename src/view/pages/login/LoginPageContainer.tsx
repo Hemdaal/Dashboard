@@ -44,7 +44,7 @@ function useLogin() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [user, setUser] = useState<User | null>(null);
-    const system = new System();
+    const system = System.getInstance();
 
     function login(email: string, password: string) {
         setLoading(true);

@@ -1,27 +1,50 @@
-import React from "react";
+import React, {useState} from "react";
 import '../../app/AppComponent.css';
 import NavBarComponent from "./NavBarComponent";
 import {useHistory} from "react-router-dom";
+import {System} from "../../../models/System";
+import {User} from "../../../models/User";
 
 export default function NavBarContainer() {
 
-    //const {loading, error, data} = useQuery<{ me: Me }>(USER_QUERY);
-    //const [Logout, {loading: logoutLoading, error: logoutError, data: logoutData}] = useMutation<{ status: Boolean }>(LOGOUT);
+    const {loading, user, logout} = useLogin();
     const history = useHistory();
 
     return (
         <NavBarComponent
-            isLoading={false}
-            userName=''
+            isLoading={loading}
+            user={user}
             onLogin={() => {
                 history.push('/login')
             }}
             onLogout={() => {
-
+                logout();
+                history.push('/login')
             }}
         />);
 }
 
 function logout(Logout: any) {
     Logout({variables: {}})
+}
+
+function useLogin() {
+    const system = System.getInstance();
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    system.getAccess().then(user => {
+        setLoading(false);
+        setUser(user)
+    }).catch(error => {
+        setLoading(false);
+        setUser(null);
+    });
+
+
+    function logout() {
+        system.logout()
+    }
+
+    return {loading, user, logout};
 }

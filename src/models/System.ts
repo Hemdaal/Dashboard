@@ -2,9 +2,20 @@ import {UserRepository} from "../repositories/UserRepository";
 import {User} from "./User";
 
 export class System {
+
+    static instance: System;
+
+    static getInstance(): System {
+        if (!this.instance) {
+            this.instance = new System();
+        }
+
+        return this.instance;
+    }
+
     private userRepository: UserRepository;
 
-    constructor() {
+    private constructor() {
         this.userRepository = new UserRepository();
     }
 
@@ -32,5 +43,17 @@ export class System {
 
             }).catch(error => reject(error))
         });
+    }
+
+    getAccess(): Promise<User> {
+        return new Promise<User>((resolve, reject) => {
+            this.userRepository.getUser().then(user => {
+                resolve(user)
+            }).catch(error => reject(error))
+        })
+    }
+
+    async logout() {
+        await this.userRepository.logout()
     }
 }

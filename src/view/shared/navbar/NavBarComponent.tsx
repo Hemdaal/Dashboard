@@ -3,6 +3,7 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {Avatar, Badge, CircularProgress, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import {User} from "../../../models/User";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,10 +22,32 @@ const useStyles = makeStyles(theme => ({
 
 interface NavProps {
     isLoading: Boolean,
-    userName?: string,
+    user: User | null,
     onLogout: (() => void),
     onLogin: (() => void)
 }
+
+export default function NavBarComponent(navProps: NavProps) {
+
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" className={classes.title}>
+                        Hemdaal
+                    </Typography>
+                    <div>
+                        <LoginInfo isLoading={navProps.isLoading} user={navProps.user}
+                                   onLogin={navProps.onLogin} onLogout={navProps.onLogout}/>
+                    </div>
+                </Toolbar>
+            </AppBar>
+        </div>
+    );
+}
+
 
 function LoginInfo(navProps: NavProps) {
 
@@ -39,11 +62,11 @@ function LoginInfo(navProps: NavProps) {
 
     if (navProps.isLoading) {
         return <div><CircularProgress color="secondary"/></div>
-    } else if (navProps.userName) {
+    } else if (navProps.user) {
         return <div>
             <IconButton onClick={handleClick}>
                 <Badge color={"primary"}>
-                    <Avatar>{navProps.userName?.substring(0, 1).toLocaleUpperCase()}</Avatar>
+                    <Avatar>{navProps.user.name?.substring(0, 1).toLocaleUpperCase()}</Avatar>
                 </Badge>
             </IconButton>
             <Menu
@@ -60,24 +83,4 @@ function LoginInfo(navProps: NavProps) {
     }
 }
 
-export default function NavBarComponent(navProps: NavProps) {
-
-    const classes = useStyles();
-
-    return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        Hemdaal
-                    </Typography>
-                    <div>
-                        <LoginInfo isLoading={navProps.isLoading} userName={navProps.userName}
-                                   onLogin={navProps.onLogin} onLogout={navProps.onLogout}/>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </div>
-    );
-}
 
