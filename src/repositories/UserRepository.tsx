@@ -1,4 +1,6 @@
 import gql from "graphql-tag";
+import {User} from "../models/User";
+import {BaseRepository} from "./BaseRepository";
 
 export const ME_QUERY = gql`
     query me {
@@ -31,3 +33,18 @@ export const SIGNUP = gql`
         }
     }
 `;
+
+export class UserRepository extends BaseRepository {
+
+    login(email: string, password: string): Promise<string> {
+        return this.call(LOGIN, {email: email, password: password})
+    }
+
+    getUser(): Promise<User> {
+        return this.call<User>(ME_QUERY, {});
+    }
+
+    saveUserToken(token: string) {
+        localStorage.setItem('token', token);
+    }
+}

@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import AddSoftwareFormContainer from "../../shared/addSoftwareForm/AddSoftwareFormContainer";
 import Software from "../../../models/Software";
+import NavBarContainer from "../../shared/NavBarContainer";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -39,40 +40,43 @@ function onSoftwareChange(software: Software) {
 }
 
 
-export default function CreateProjectComponent(props: CreateProjectProps) {
+export default function CreateProjectPageComponent(props: CreateProjectProps) {
 
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline/>
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="Project Name"
-                name="name"
-                autoComplete="email"
-                autoFocus
-            />
-            {getSoftwareFormList(props.softwares, props.removeSoftware)}
-            <Button
-                color="primary"
-                onClick={() => {
-                    props.addSoftware({})
-                }}>
-                Add Software
-            </Button>
-
-
-            <div>
-                <Button variant="contained" color="primary">
-                    Create
+        <div>
+            <NavBarContainer/>
+            <Container component="main" maxWidth="sm">
+                <CssBaseline/>
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="name"
+                    label="Project Name"
+                    name="name"
+                    autoComplete="email"
+                    autoFocus
+                />
+                {getSoftwareFormList(props.softwares, props.removeSoftware)}
+                <Button
+                    color="primary"
+                    onClick={() => {
+                        props.addSoftware(new Software(0, ''))
+                    }}>
+                    Add Software
                 </Button>
-            </div>
-        </Container>
+
+
+                <div>
+                    <Button variant="contained" color="primary">
+                        Create
+                    </Button>
+                </div>
+            </Container>
+        </div>
     );
 }
 

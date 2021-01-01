@@ -4,8 +4,7 @@ import {useMutation} from "@apollo/react-hooks";
 import {LoginResult} from "../../../repositories/GraphQLSchema";
 import {SIGNUP} from "../../../repositories/UserRepository";
 import {isValidEmail} from "../../../utils/ValidationUtils";
-import NavBarContainer from "../../shared/NavBarContainer";
-import SignUpComponent from "./SignUpComponent";
+import SignUpPageComponent from "./SignUpPageComponent";
 
 function signUp(name: string, email: string, password: string, Signup: any) {
     Signup({variables: {name: name, email: email, password: password}})
@@ -15,7 +14,7 @@ function validate(name: string, email: string, password: string): boolean {
     return name.length > 3 && isValidEmail(email) && password.length > 4
 }
 
-export default function SignUpContainer() {
+export default function SignUpPageContainer() {
 
     const [Signup, {loading, error, data}] = useMutation<{ createUser: LoginResult }>(SIGNUP);
 
@@ -31,31 +30,23 @@ export default function SignUpContainer() {
     }
 
     return (
-        <div>
-            <div>
-                <NavBarContainer/>
-            </div>
-            <div>
-                <SignUpComponent
-                    name={name}
-                    email={email}
-                    password={password}
-                    rememberMe={rememberMe}
-                    loading={loading}
-                    onNameChange={setName}
-                    onEmailChange={setEmail}
-                    onPasswordChange={setPassword}
-                    onRememberMeChange={setRememberMe}
-                    onSignUpClick={() => {
-                        signUp(name, email, password, Signup)
-                    }}
-                    onLoginClick={() => {
-                        history.push('/login')
-                    }}
-                    validate={() => validate(name, email, password)}
-                />
-            </div>
-        </div>
-
+        <SignUpPageComponent
+            name={name}
+            email={email}
+            password={password}
+            rememberMe={rememberMe}
+            loading={loading}
+            onNameChange={setName}
+            onEmailChange={setEmail}
+            onPasswordChange={setPassword}
+            onRememberMeChange={setRememberMe}
+            onSignUpClick={() => {
+                signUp(name, email, password, Signup)
+            }}
+            onLoginClick={() => {
+                history.push('/login')
+            }}
+            validate={() => validate(name, email, password)}
+        />
     );
 }
