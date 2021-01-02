@@ -4,4 +4,8 @@ export class AuthInfo {
     constructor(token: string) {
         this.token = token;
     }
+
+    static from(json: any): AuthInfo {
+        return new AuthInfo(json.token)
+    }
 }

@@ -39,7 +39,7 @@ export class UserRepository extends BaseRepository {
     async login(email: string, password: string): Promise<AuthInfo> {
         return new Promise<AuthInfo>((resolve, reject) => {
             this.call(LOGIN, {email: email, password: password}).then(response => {
-                resolve(response.data.login);
+                resolve(AuthInfo.from(response.data.login))
             }).catch(error => {
                 console.error(error);
                 return reject(error);
@@ -50,7 +50,7 @@ export class UserRepository extends BaseRepository {
     async signup(name: string, email: string, password: string): Promise<AuthInfo> {
         return new Promise<AuthInfo>((resolve, reject) => {
             this.call(SIGNUP, {name: name, email: email, password: password}).then(response => {
-                resolve(response.data.createUser)
+                resolve(AuthInfo.from(response.data.createUser))
             }).catch(error => reject(error))
         });
     }
@@ -58,7 +58,7 @@ export class UserRepository extends BaseRepository {
     async getUser(): Promise<User> {
         return new Promise<User>((resolve, reject) => {
             this.call(USER_QUERY, {}).then(response => {
-                resolve(response.data.user)
+                resolve(User.from(response.data.user))
             }).catch(error => reject(error))
         });
     }

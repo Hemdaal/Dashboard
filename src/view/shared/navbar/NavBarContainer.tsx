@@ -29,18 +29,21 @@ function logout(Logout: any) {
 }
 
 function useLogin() {
+    const [initialized, setInitialized] = useState(false);
     const system = System.getInstance();
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
-    system.getAccess().then(user => {
-        setLoading(false);
-        setUser(user)
-    }).catch(error => {
-        setLoading(false);
-        setUser(null);
-    });
-
+    if (!initialized) {
+        setInitialized(true);
+        system.getAccess().then(user => {
+            setLoading(false);
+            setUser(user)
+        }).catch(error => {
+            setLoading(false);
+            setUser(null);
+        });
+    }
 
     function logout() {
         system.logout()
