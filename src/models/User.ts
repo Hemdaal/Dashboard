@@ -18,4 +18,13 @@ export class User {
         const projectRepository = new ProjectRepository();
         return projectRepository.getProjects();
     }
+
+    createProject(name: string): Promise<Project> {
+        return new Promise<any>((resolve, reject) => {
+            const projectRepository = new ProjectRepository();
+            projectRepository.createProject(name)
+                .then(createdProject => resolve(createdProject))
+                .catch(error => reject(error));
+        })
+    }
 }

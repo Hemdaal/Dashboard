@@ -21,4 +21,12 @@ export class ProjectRepository extends BaseRepository {
             }).catch(error => reject(error))
         });
     }
+
+    createProject(name: string): Promise<Project> {
+        return new Promise<Project>((resolve, reject) => {
+            this.call(PROJECT_QUERY, {}).then(data => {
+                //TODO
+            }).catch(error => reject(error))
+        });
+    }
 }

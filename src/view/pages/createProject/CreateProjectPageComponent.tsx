@@ -1,13 +1,12 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import {Icon, Select} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import AddSoftwareFormContainer from "../../shared/addSoftwareForm/AddSoftwareFormContainer";
-import Software from "../../../models/Software";
 import NavBarContainer from "../../shared/navbar/NavBarContainer";
+import {SoftwareCreateInfo} from "../../../models/ProjectCreateInfo";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,13 +28,16 @@ const useStyles = makeStyles(theme => ({
 
 interface CreateProjectProps {
     projectName: string
-    softwares: Software[]
+    softwares: SoftwareCreateInfo[]
+    error: any,
+    loading: boolean,
     setProjectName: ((projectName: string) => void)
-    addSoftware: ((software: Software) => void)
-    removeSoftware: ((software: Software) => void)
+    addSoftware: ((software: SoftwareCreateInfo) => void)
+    removeSoftware: ((software: SoftwareCreateInfo) => void)
+    createProject: (() => void)
 }
 
-function onSoftwareChange(software: Software) {
+function onSoftwareChange(software: SoftwareCreateInfo) {
 
 }
 
@@ -64,14 +66,18 @@ export default function CreateProjectPageComponent(props: CreateProjectProps) {
                 <Button
                     color="primary"
                     onClick={() => {
-                        props.addSoftware(new Software(0, ''))
+                        props.addSoftware(new SoftwareCreateInfo())
                     }}>
                     Add Software
                 </Button>
 
 
                 <div>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary"
+                            onClick={() => {
+                                props.createProject();
+                            }}
+                    >
                         Create
                     </Button>
                 </div>
@@ -80,7 +86,7 @@ export default function CreateProjectPageComponent(props: CreateProjectProps) {
     );
 }
 
-function getSoftwareFormList(softwares: Software[], removeSoftware: ((software: Software) => void)) {
+function getSoftwareFormList(softwares: SoftwareCreateInfo[], removeSoftware: ((software: SoftwareCreateInfo) => void)) {
 
     const items: any = [];
 

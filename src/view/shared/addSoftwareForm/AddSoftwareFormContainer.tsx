@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import AddSoftwareFormComponent from "./AddSoftwareFormComponent";
 import {Box} from "@material-ui/core";
-import Software from "../../../models/Software";
+import {SoftwareCreateInfo} from "../../../models/ProjectCreateInfo";
 
 interface AddSoftwareProps {
-    software: Software
-    onSoftwareChange: ((software: Software) => void)
-    onSoftwareRemove: ((software: Software) => void)
+    software: SoftwareCreateInfo
+    onSoftwareChange: ((software: SoftwareCreateInfo) => void)
+    onSoftwareRemove: ((software: SoftwareCreateInfo) => void)
 }
 
 export default function AddSoftwareFormContainer(props: AddSoftwareProps) {

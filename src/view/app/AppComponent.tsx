@@ -15,6 +15,7 @@ export default function AppComponent() {
                     <Route path="/createProject" component={CreateProjectPageContainer}/>
                     <Route path="/signup" exact><SignUpPageContainer/></Route>
                     <Route path="/login" exact><LoginPageContainer/></Route>
+                    <Route path="/project/:projectId" exact><LoginPageContainer/></Route>
                     <Route path="/" exact><DashboardPageContainer/></Route>
                     <Route path="*" exact><ErrorComponent/></Route>
                 </Switch>
