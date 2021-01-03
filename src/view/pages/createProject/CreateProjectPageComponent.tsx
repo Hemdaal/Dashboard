@@ -4,9 +4,9 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
-import AddSoftwareFormContainer from "../../shared/addSoftwareForm/AddSoftwareFormContainer";
 import NavBarContainer from "../../shared/navbar/NavBarContainer";
 import {SoftwareCreateInfo} from "../../../models/ProjectCreateInfo";
+import AddSoftwareFormComponent from "../../shared/addSoftwareForm/AddSoftwareFormComponent";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,14 +33,10 @@ interface CreateProjectProps {
     loading: boolean,
     setProjectName: ((projectName: string) => void)
     addSoftware: ((software: SoftwareCreateInfo) => void)
+    setSoftware: ((index: number, software: SoftwareCreateInfo) => void)
     removeSoftware: ((software: SoftwareCreateInfo) => void)
     createProject: (() => void)
 }
-
-function onSoftwareChange(software: SoftwareCreateInfo) {
-
-}
-
 
 export default function CreateProjectPageComponent(props: CreateProjectProps) {
 
@@ -62,7 +58,7 @@ export default function CreateProjectPageComponent(props: CreateProjectProps) {
                     autoComplete="email"
                     autoFocus
                 />
-                {getSoftwareFormList(props.softwares, props.removeSoftware)}
+                {getSoftwareFormList(props.softwares, props.removeSoftware, props.setSoftware)}
                 <Button
                     color="primary"
                     onClick={() => {
@@ -86,15 +82,21 @@ export default function CreateProjectPageComponent(props: CreateProjectProps) {
     );
 }
 
-function getSoftwareFormList(softwares: SoftwareCreateInfo[], removeSoftware: ((software: SoftwareCreateInfo) => void)) {
+function getSoftwareFormList(
+    softwares: SoftwareCreateInfo[],
+    removeSoftware: ((software: SoftwareCreateInfo) => void),
+    setSoftware: ((index: number, software: SoftwareCreateInfo) => void)
+) {
 
     const items: any = [];
 
     softwares.map(((value, index) => {
-        items.push(<AddSoftwareFormContainer
+        items.push(<AddSoftwareFormComponent
             key={index}
             software={value}
-            onSoftwareChange={onSoftwareChange}
+            onSoftwareChange={(software) => {
+                setSoftware(index, software)
+            }}
             onSoftwareRemove={(i) => {
                 removeSoftware(value)
             }}

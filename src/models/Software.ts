@@ -13,6 +13,10 @@ export default class Software {
         this.name = name;
     }
 
+    static from (json: any) : Software {
+        return new Software(json.id, json.projectId, json.name)
+    }
+
     setCodeManagement(codeManagementInfo: CodeManagementCreateInfo): Promise<CodeManagement> {
         const softwareRepository = new SoftwareRepository();
 

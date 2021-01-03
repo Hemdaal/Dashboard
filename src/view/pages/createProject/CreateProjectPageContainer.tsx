@@ -1,45 +1,48 @@
 import React, {useState} from "react";
 import CreateProjectPageComponent from "./CreateProjectPageComponent";
 import {System} from "../../../models/System";
-import {ProjectCreateInfo, SoftwareCreateInfo} from "../../../models/ProjectCreateInfo";
+import {SoftwareCreateInfo} from "../../../models/ProjectCreateInfo";
 import {useHistory} from "react-router";
 
 export default function CreateProjectPageContainer() {
 
-    const [projectCreationInfo, setProjectCreationInfo] = useState(new ProjectCreateInfo());
+    const [name, setName] = useState('');
+    const [softwares, setSoftwares] = useState<SoftwareCreateInfo[]>([]);
     const {error, loading, projectCreatedId, createProject} = useCreateProject();
     const history = useHistory();
 
-    function setProjectName(name: string) {
-        projectCreationInfo.name = name;
-        setProjectCreationInfo(projectCreationInfo);
-    }
-
-    function setSoftware(software: SoftwareCreateInfo) {
-        projectCreationInfo.softwares.concat(software);
-        setProjectCreationInfo(projectCreationInfo);
+    function addSoftware(software: SoftwareCreateInfo) {
+        const addedSoftwares = softwares.concat(software);
+        setSoftwares(addedSoftwares);
     }
 
     function removeSoftware(software: SoftwareCreateInfo) {
-        projectCreationInfo.softwares = projectCreationInfo.softwares.filter((item) => (item !== software));
-        setProjectCreationInfo(projectCreationInfo);
+        const removedSoftwares = softwares.filter((item) => (item !== software));
+        setSoftwares(removedSoftwares);
     }
 
-    if(projectCreatedId) {
+    function setSoftware(index: number, software: SoftwareCreateInfo) {
+        const softwareToBeChanged = softwares.map(software => software);
+        softwareToBeChanged[index] = software;
+        setSoftwares(softwareToBeChanged);
+    }
+
+    if (projectCreatedId) {
         history.push(`/project/${projectCreatedId}`)
     }
 
     return (
         <CreateProjectPageComponent
-            projectName={projectCreationInfo.name}
-            softwares={projectCreationInfo.softwares}
+            projectName={name}
+            softwares={softwares}
             error={error}
             loading={loading}
-            setProjectName={setProjectName}
-            addSoftware={software => setSoftware(software)}
+            setProjectName={setName}
+            addSoftware={software => addSoftware(software)}
             removeSoftware={software => removeSoftware(software)}
+            setSoftware={(index, software) => setSoftware(index, software)}
             createProject={() => {
-                createProject(projectCreationInfo)
+                createProject(name, softwares)
             }}
         />
     );
@@ -51,14 +54,14 @@ function useCreateProject() {
     const [projectCreatedId, setProjectCreatedId] = useState<number | null>(null);
     const system = System.getInstance();
 
-    function createProject(projectCreateInfo: ProjectCreateInfo) {
+    function createProject(name: string, softwares: SoftwareCreateInfo[]) {
         system.getAccess().then(user => {
-            user.createProject(projectCreateInfo.name).then(createdProject => {
-                projectCreateInfo.softwares.forEach((softwareCreateInfo, index) => {
+            user.createProject(name).then(createdProject => {
+                softwares.forEach((softwareCreateInfo, index) => {
                     createdProject.addSoftWare(softwareCreateInfo.name).then(addedSoftware => {
                         addedSoftware.setCodeManagement(softwareCreateInfo.codeManagement).then(codeManagement => {
                             //Checking for last operation.
-                            if (index == projectCreateInfo.softwares.length - 1) {
+                            if (index === softwares.length - 1) {
                                 setProjectCreatedId(createdProject.id);
                             }
                         }).catch(error => setError(error))

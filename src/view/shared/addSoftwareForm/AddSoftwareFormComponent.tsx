@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
 
 interface AddSoftwareProps {
     software: SoftwareCreateInfo
-    onSoftwareRemove: (() => void)
+    onSoftwareChange: ((software: SoftwareCreateInfo) => void)
+    onSoftwareRemove: ((software: SoftwareCreateInfo) => void)
 }
 
 export default function AddSoftwareFormComponent(props: AddSoftwareProps) {
@@ -32,7 +33,9 @@ export default function AddSoftwareFormComponent(props: AddSoftwareProps) {
     return (
         <Box border="1" borderColor="primary.main" className={classes.box}>
             <div className={classes.form}>
-                <Button color="secondary" className={classes.remove} onClick={props.onSoftwareRemove}>
+                <Button color="secondary" className={classes.remove} onClick={() => {
+                    props.onSoftwareRemove(props.software)
+                }}>
                     Remove
                 </Button>
                 <TextField
@@ -43,6 +46,11 @@ export default function AddSoftwareFormComponent(props: AddSoftwareProps) {
                     id="name"
                     label="Software Name"
                     name="name"
+                    value={props.software.name}
+                    onChange={e => {
+                        props.software.name = e.target.value;
+                        props.onSoftwareChange(props.software);
+                    }}
                     autoComplete="email"
                     autoFocus
                 />
@@ -52,7 +60,7 @@ export default function AddSoftwareFormComponent(props: AddSoftwareProps) {
                             control={<Checkbox name="Code Metrics"/>}
                             label="Code Metrics"
                         />
-                        {getCodeMetricsForm(classes)}
+                        {getCodeMetricsForm(classes, props)}
                         <FormControlLabel
                             control={<Checkbox name="Build Metrics"/>}
                             label="Build Metrics"
@@ -68,7 +76,7 @@ export default function AddSoftwareFormComponent(props: AddSoftwareProps) {
     );
 }
 
-function getCodeMetricsForm(styles: any) {
+function getCodeMetricsForm(styles: any, props: AddSoftwareProps) {
 
     return <div className={styles.box}>
         <FormControl variant="outlined" className={styles.form}>
@@ -89,6 +97,11 @@ function getCodeMetricsForm(styles: any) {
                 id="name"
                 label="Repo url"
                 name="name"
+                value={props.software.codeManagement.url}
+                onChange={e => {
+                    props.software.codeManagement.url = e.target.value;
+                    props.onSoftwareChange(props.software);
+                }}
                 autoComplete="url"
                 autoFocus
             />
@@ -99,7 +112,12 @@ function getCodeMetricsForm(styles: any) {
                 fullWidth
                 id="name"
                 label="Token"
-                name="name"
+                name="token"
+                value={props.software.codeManagement.token}
+                onChange={e => {
+                    props.software.codeManagement.token = e.target.value;
+                    props.onSoftwareChange(props.software);
+                }}
                 autoFocus
             />
         </FormControl>

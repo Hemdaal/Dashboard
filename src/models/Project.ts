@@ -10,6 +10,10 @@ export class Project {
         this.name = name;
     }
 
+    static from (json: any) : Project {
+        return new Project(json.id, json.name);
+    }
+
     addSoftWare(name: string): Promise<Software> {
         const softwareRepository = new SoftwareRepository();
         return new Promise<Software>((resolve, reject) => {

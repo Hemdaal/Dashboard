@@ -13,5 +13,5 @@ export class SoftwareCreateInfo {
 export class CodeManagementCreateInfo {
     type: CodeManagementRepoType = CodeManagementRepoType.GITHUB;
     url: string = '';
-    token: string | null = null;
+    token: string = '';
 }

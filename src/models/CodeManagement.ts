@@ -12,4 +12,8 @@ export class CodeManagement {
         this.url = url;
         this.token = token;
     }
+
+    static from (json: any) : CodeManagement {
+        return new CodeManagement(json.id, json.repoType, json.url, json.token)
+    }
 }
