@@ -6,10 +6,12 @@ import {useHistory} from "react-router";
 
 export default function DashboardPageContainer() {
 
-    const {error, loading, projects} = useDashboard();
+    const {error, loading, projects, loginFailed} = useDashboard();
     const history = useHistory();
 
-    console.log(projects.length);
+    if (loginFailed) {
+        history.push("/login")
+    }
 
     return (
         <DashboardPageComponent
@@ -24,6 +26,7 @@ function useDashboard() {
     const [initialized, setInitialized] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [loginFailed, setLoginFailed] = useState(false);
     const [projects, setProjects] = useState<Project[]>([]);
     const system = System.getInstance();
 
@@ -38,10 +41,11 @@ function useDashboard() {
                 setError(error);
             })
         }).catch(error => {
+            setLoginFailed(true);
             setLoading(false);
             setError(error);
         })
     }
 
-    return {error, loading, projects};
+    return {error, loading, projects, loginFailed};
 }

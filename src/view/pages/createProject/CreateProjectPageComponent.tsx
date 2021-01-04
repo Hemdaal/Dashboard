@@ -31,6 +31,7 @@ interface CreateProjectProps {
     softwares: SoftwareCreateInfo[]
     error: any,
     loading: boolean,
+    isValid: boolean
     setProjectName: ((projectName: string) => void)
     addSoftware: ((software: SoftwareCreateInfo) => void)
     setSoftware: ((index: number, software: SoftwareCreateInfo) => void)
@@ -55,7 +56,10 @@ export default function CreateProjectPageComponent(props: CreateProjectProps) {
                     id="name"
                     label="Project Name"
                     name="name"
-                    autoComplete="email"
+                    value={props.projectName}
+                    onChange={e => {
+                        props.setProjectName(e.target.value);
+                    }}
                     autoFocus
                 />
                 {getSoftwareFormList(props.softwares, props.removeSoftware, props.setSoftware)}
@@ -69,7 +73,7 @@ export default function CreateProjectPageComponent(props: CreateProjectProps) {
 
 
                 <div>
-                    <Button variant="contained" color="primary"
+                    <Button variant="contained" color="primary" disabled={!props.isValid}
                             onClick={() => {
                                 props.createProject();
                             }}

@@ -13,7 +13,7 @@ export const PROJECT_QUERY = `
 `;
 
 export const CREATE_PROJECT_QUERY = `
-    mutation createUser($name: String!) {
+    mutation createProject($name: String!) {
         user {
             createProject(name: $name) {
                 id,

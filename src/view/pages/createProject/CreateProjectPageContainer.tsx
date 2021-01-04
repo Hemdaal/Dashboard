@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import CreateProjectPageComponent from "./CreateProjectPageComponent";
 import {System} from "../../../models/System";
-import {SoftwareCreateInfo} from "../../../models/ProjectCreateInfo";
+import {ProjectCreateInfo, SoftwareCreateInfo} from "../../../models/ProjectCreateInfo";
 import {useHistory} from "react-router";
 
 export default function CreateProjectPageContainer() {
@@ -27,6 +27,14 @@ export default function CreateProjectPageContainer() {
         setSoftwares(softwareToBeChanged);
     }
 
+    function isValid(): boolean {
+        const projectCreateInfo = new ProjectCreateInfo();
+        projectCreateInfo.name = name;
+        projectCreateInfo.softwares = softwares;
+        return projectCreateInfo.isValidData();
+    }
+
+
     if (projectCreatedId) {
         history.push(`/project/${projectCreatedId}`)
     }
@@ -35,6 +43,7 @@ export default function CreateProjectPageContainer() {
         <CreateProjectPageComponent
             projectName={name}
             softwares={softwares}
+            isValid={isValid()}
             error={error}
             loading={loading}
             setProjectName={setName}
@@ -42,7 +51,10 @@ export default function CreateProjectPageContainer() {
             removeSoftware={software => removeSoftware(software)}
             setSoftware={(index, software) => setSoftware(index, software)}
             createProject={() => {
-                createProject(name, softwares)
+                const projectCreateInfo = new ProjectCreateInfo();
+                projectCreateInfo.name = name;
+                projectCreateInfo.softwares = softwares;
+                createProject(projectCreateInfo)
             }}
         />
     );
@@ -54,14 +66,14 @@ function useCreateProject() {
     const [projectCreatedId, setProjectCreatedId] = useState<number | null>(null);
     const system = System.getInstance();
 
-    function createProject(name: string, softwares: SoftwareCreateInfo[]) {
+    function createProject(projectCreateInfo: ProjectCreateInfo) {
         system.getAccess().then(user => {
-            user.createProject(name).then(createdProject => {
-                softwares.forEach((softwareCreateInfo, index) => {
+            user.createProject(projectCreateInfo.name).then(createdProject => {
+                projectCreateInfo.softwares.forEach((softwareCreateInfo, index) => {
                     createdProject.addSoftWare(softwareCreateInfo.name).then(addedSoftware => {
                         addedSoftware.setCodeManagement(softwareCreateInfo.codeManagement).then(codeManagement => {
                             //Checking for last operation.
-                            if (index === softwares.length - 1) {
+                            if (index === projectCreateInfo.softwares.length - 1) {
                                 setProjectCreatedId(createdProject.id);
                             }
                         }).catch(error => setError(error))

@@ -57,8 +57,12 @@ export default function AddSoftwareFormComponent(props: AddSoftwareProps) {
                 <FormControl component="fieldset">
                     <FormGroup>
                         <FormControlLabel
-                            control={<Checkbox name="Code Metrics"/>}
+                            control={<Checkbox name="Code Metrics" value={props.software.enableCodeManagement}/>}
                             label="Code Metrics"
+                            onChange={(e: any) => {
+                                props.software.enableCodeManagement = e.target.checked;
+                                props.onSoftwareChange(props.software);
+                            }}
                         />
                         {getCodeMetricsForm(classes, props)}
                         <FormControlLabel
@@ -78,49 +82,53 @@ export default function AddSoftwareFormComponent(props: AddSoftwareProps) {
 
 function getCodeMetricsForm(styles: any, props: AddSoftwareProps) {
 
-    return <div className={styles.box}>
-        <FormControl variant="outlined" className={styles.form}>
-            <InputLabel id="demo-simple-select-outlined-label">Select</InputLabel>
-            <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                label="Age"
-            >
-                <MenuItem value={10}>GITHUB</MenuItem>
-                <MenuItem value={20}>GITLAB</MenuItem>
-            </Select>
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="Repo url"
-                name="name"
-                value={props.software.codeManagement.url}
-                onChange={e => {
-                    props.software.codeManagement.url = e.target.value;
-                    props.onSoftwareChange(props.software);
-                }}
-                autoComplete="url"
-                autoFocus
-            />
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="Token"
-                name="token"
-                value={props.software.codeManagement.token}
-                onChange={e => {
-                    props.software.codeManagement.token = e.target.value;
-                    props.onSoftwareChange(props.software);
-                }}
-                autoFocus
-            />
-        </FormControl>
-    </div>;
+    if (props.software.enableCodeManagement) {
+        return <div className={styles.box}>
+            <FormControl variant="outlined" className={styles.form}>
+                <InputLabel id="demo-simple-select-outlined-label">Select</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    label="Age"
+                >
+                    <MenuItem value={10}>GITHUB</MenuItem>
+                    <MenuItem value={20}>GITLAB</MenuItem>
+                </Select>
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="name"
+                    label="Repo url"
+                    name="name"
+                    value={props.software.codeManagement.url}
+                    onChange={e => {
+                        props.software.codeManagement.url = e.target.value;
+                        props.onSoftwareChange(props.software);
+                    }}
+                    autoComplete="url"
+                    autoFocus
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="name"
+                    label="Token"
+                    name="token"
+                    value={props.software.codeManagement.token}
+                    onChange={e => {
+                        props.software.codeManagement.token = e.target.value;
+                        props.onSoftwareChange(props.software);
+                    }}
+                    autoFocus
+                />
+            </FormControl>
+        </div>;
+    } else {
+        return <div/>;
+    }
 }
 
