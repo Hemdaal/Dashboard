@@ -24,10 +24,6 @@ export default function NavBarContainer() {
         />);
 }
 
-function logout(Logout: any) {
-    Logout({variables: {}})
-}
-
 function useLogin() {
     const [initialized, setInitialized] = useState(false);
     const system = System.getInstance();

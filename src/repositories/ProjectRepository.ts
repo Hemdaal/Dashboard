@@ -27,8 +27,8 @@ export class ProjectRepository extends BaseRepository {
 
     getProjects(): Promise<Project[]> {
         return new Promise<Project[]>((resolve, reject) => {
-            this.call(PROJECT_QUERY, {}).then(data => {
-                resolve(data.user.projects.map((project: any) =>
+            this.call(PROJECT_QUERY, {}).then(response => {
+                resolve(response.data.user.projects.map((project: any) =>
                     Project.from(project)
                 ));
             }).catch(error => reject(error))
@@ -37,8 +37,8 @@ export class ProjectRepository extends BaseRepository {
 
     createProject(name: string): Promise<Project> {
         return new Promise<Project>((resolve, reject) => {
-            this.call(CREATE_PROJECT_QUERY, {name: name}).then(data => {
-                resolve(Project.from(data.user.createProject))
+            this.call(CREATE_PROJECT_QUERY, {name: name}).then(response => {
+                resolve(Project.from(response.data.user.createProject))
             }).catch(error => reject(error))
         });
     }

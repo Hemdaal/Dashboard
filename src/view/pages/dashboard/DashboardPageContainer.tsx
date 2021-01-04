@@ -9,6 +9,8 @@ export default function DashboardPageContainer() {
     const {error, loading, projects} = useDashboard();
     const history = useHistory();
 
+    console.log(projects.length);
+
     return (
         <DashboardPageComponent
             loading={loading}

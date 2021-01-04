@@ -8,6 +8,7 @@ import {ButtonBase, Card, Grid, Paper} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import LoadingComponent from "../../shared/LoadingComponent";
 import {ClassNameMap} from "@material-ui/core/styles/withStyles";
+import AddSoftwareFormComponent from "../../shared/addSoftwareForm/AddSoftwareFormComponent";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -42,10 +43,7 @@ export default function DashboardPageComponent(props: DashboardPageProps) {
             <Container component="main" maxWidth="sm">
                 <CssBaseline/>
                 {getLoadingComponent(props.loading)}
-                <Grid container spacing={3}>
-                    {getAddProjectComponent(props.onCreateProject, classes)}
-                    {getProjectComponents(props.projects, classes)}
-                </Grid>
+                {getProjectComponents(props.projects, classes, props.onCreateProject)}
             </Container>
         </div>
     );
@@ -53,7 +51,7 @@ export default function DashboardPageComponent(props: DashboardPageProps) {
 
 function getAddProjectComponent(onCreateProject: () => void, classes: any) {
     return (
-        <Grid item xs={3}>
+        <Grid item xs={3} key={0}>
             <Card className={classes.card}>
                 <ButtonBase
                     className={classes.cardAction}
@@ -70,22 +68,25 @@ function getAddProjectComponent(onCreateProject: () => void, classes: any) {
     );
 }
 
-function getProjectComponents(projects: Project[], classes: any) {
+function getProjectComponents(projects: Project[], classes: any, onCreateProject: () => void,) {
     const items: any = [];
 
+    items.push(getAddProjectComponent(onCreateProject, classes));
     projects.map(((value, index) => {
-        items.push(getProjectComponent(value, classes))
+        items.push(getProjectComponent(value, index, classes))
     }));
 
-    return <div>
-        {items}
-    </div>;
+    return <Grid container spacing={3}>{items}</Grid>
 }
 
-function getProjectComponent(project: Project, classes: any) {
+function getProjectComponent(project: Project, index: number, classes: any) {
     return (
-        <Grid item xs={3}>
-            <Paper className={classes.paper}>{project.name}</Paper>
+        <Grid item xs={3} key={index+1}>
+            <Card className={classes.card}>
+                <div>
+                    {project.name}
+                </div>
+            </Card>
         </Grid>
     );
 }
