@@ -1,5 +1,7 @@
 import Software from "./Software";
 import {SoftwareRepository} from "../repositories/SoftwareRepository";
+import {ProjectDashboard} from "./ProjectDashboard";
+import {ProjectDashboardRepository} from "../repositories/ProjectDashboardRepository";
 
 export class Project {
     id: number;
@@ -20,6 +22,13 @@ export class Project {
             softwareRepository.addSoftware(this.id, name)
                 .then(addedSoftware => resolve(addedSoftware))
                 .catch(error => reject(error))
+        })
+    }
+
+    getProjectDashboard(): Promise<ProjectDashboard> {
+        const projectDashboardRepository = new ProjectDashboardRepository();
+        return new Promise<ProjectDashboard>((resolve, reject) => {
+            projectDashboardRepository.getDashboard(this.id)
         })
     }
 }
