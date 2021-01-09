@@ -3,12 +3,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import NavBarContainer from "../../shared/navbar/NavBarContainer";
-import {Project} from "../../../models/Project";
-import {ButtonBase, Card, Grid, Paper} from "@material-ui/core";
-import AddIcon from '@material-ui/icons/Add';
 import LoadingComponent from "../../shared/LoadingComponent";
-import {ClassNameMap} from "@material-ui/core/styles/withStyles";
-import AddSoftwareFormComponent from "../../shared/addSoftwareForm/AddSoftwareFormComponent";
 import {ProjectDashboard} from "../../../models/ProjectDashboard";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,9 +38,18 @@ export default function ProjectDashboardPageComponent(props: ProjectDashboardPag
             <Container component="main" maxWidth="sm">
                 <CssBaseline/>
                 {getLoadingComponent(props.loading)}
+                {getWidgetsComponent(props.projectDashboard)}
             </Container>
         </div>
     );
+}
+
+function getWidgetsComponent(projectDashboard: ProjectDashboard | null) {
+    if (projectDashboard) {
+        return <div/>
+    } else {
+        return <div/>
+    }
 }
 
 function getLoadingComponent(loading: boolean) {

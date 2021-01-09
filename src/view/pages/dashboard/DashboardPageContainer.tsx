@@ -10,7 +10,8 @@ export default function DashboardPageContainer() {
     const history = useHistory();
 
     if (loginFailed) {
-        history.push("/login")
+        history.push("/login");
+        return <div/>
     }
 
     return (
@@ -18,6 +19,7 @@ export default function DashboardPageContainer() {
             loading={loading}
             projects={projects}
             onCreateProject={() => history.push('/createProject')}
+            onProjectSelected={(projectId => history.push(`/project/${projectId}/dashboard`))}
         />
     );
 }

@@ -30,6 +30,7 @@ interface DashboardPageProps {
     projects: Project[]
     loading: boolean
     onCreateProject: () => void
+    onProjectSelected: (projectId: number) => void
 }
 
 
@@ -43,7 +44,7 @@ export default function DashboardPageComponent(props: DashboardPageProps) {
             <Container component="main" maxWidth="sm">
                 <CssBaseline/>
                 {getLoadingComponent(props.loading)}
-                {getProjectComponents(props.projects, classes, props.onCreateProject)}
+                {getProjectComponents(props.projects, classes, props.onCreateProject, props.onProjectSelected)}
             </Container>
         </div>
     );
@@ -68,24 +69,29 @@ function getAddProjectComponent(onCreateProject: () => void, classes: any) {
     );
 }
 
-function getProjectComponents(projects: Project[], classes: any, onCreateProject: () => void,) {
+function getProjectComponents(projects: Project[], classes: any, onCreateProject: () => void, onProjectSelected: (projectId: number) => void) {
     const items: any = [];
 
     items.push(getAddProjectComponent(onCreateProject, classes));
     projects.map(((value, index) => {
-        items.push(getProjectComponent(value, index, classes))
+        items.push(getProjectComponent(value, index, classes, onProjectSelected))
     }));
 
     return <Grid container spacing={3}>{items}</Grid>
 }
 
-function getProjectComponent(project: Project, index: number, classes: any) {
+function getProjectComponent(project: Project, index: number, classes: any, onProjectSelected: (projectId: number) => void) {
     return (
-        <Grid item xs={3} key={index+1}>
+        <Grid item xs={3} key={index + 1}>
             <Card className={classes.card}>
-                <div>
-                    {project.name}
-                </div>
+                <ButtonBase
+                    onClick={event => {
+                        onProjectSelected(project.id)
+                    }}>
+                    <div>
+                        {project.name}
+                    </div>
+                </ButtonBase>
             </Card>
         </Grid>
     );
