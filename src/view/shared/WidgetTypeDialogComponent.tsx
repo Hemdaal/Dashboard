@@ -9,7 +9,8 @@ import {WidgetType} from "../../models/widgets/WidgetType";
 
 export interface WidgetTypeDialogComponentProps {
     open: boolean;
-    onClose: (value: WidgetType) => void;
+    onClose: () => void;
+    onClick: (value: WidgetType) => void;
 }
 
 export default function WidgetTypeDialogComponent(props: WidgetTypeDialogComponentProps) {
@@ -17,15 +18,15 @@ export default function WidgetTypeDialogComponent(props: WidgetTypeDialogCompone
     return <Dialog onClose={props.onClose} aria-labelledby="simple-dialog-title" open={props.open}>
         <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
         <List>
-            {getListItems(props.onClose)}
+            {getListItems(props.onClick)}
         </List>
     </Dialog>;
 }
 
-function getListItems(onClose: (value: WidgetType) => void) {
+function getListItems(onClick: (value: WidgetType) => void) {
     let items: any = [];
     Object.values(WidgetType).forEach(value => {
-        items.push(<ListItem button onClick={() => onClose(value as WidgetType)} key={value}>
+        items.push(<ListItem button onClick={() => onClick(value as WidgetType)} key={value}>
             <ListItemText primary={value}/>
         </ListItem>)
     });

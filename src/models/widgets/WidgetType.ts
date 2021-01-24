@@ -1,3 +1,3 @@
 export enum WidgetType {
-    COMMIT
+    COMMIT = 'COMMIT'
 }

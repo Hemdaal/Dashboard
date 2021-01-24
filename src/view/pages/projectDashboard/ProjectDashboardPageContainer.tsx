@@ -29,12 +29,15 @@ export default function ProjectDashboardPageContainer() {
                     setOpen(true)
                 }}
             />
-            <WidgetTypeDialogComponent open={open} onClose={value => {
-                setOpen(false);
-                if (value) {
-                    addWidget(value)
-                }
-            }}/>
+            <WidgetTypeDialogComponent
+                open={open}
+                onClose={() => setOpen(false)}
+                onClick={value => {
+                    setOpen(false);
+                    if (value) {
+                        addWidget(value)
+                    }
+                }}/>
         </div>
     );
 }
@@ -47,7 +50,7 @@ function useProjectDashboard(projectId: number) {
     const [projectDashboard, setProjectDashboard] = useState<ProjectDashboard | null>(null);
     const system = System.getInstance();
 
-    if (!initialized) {
+    if (!initialized && projectDashboard == null) {
         setInitialized(true);
         system.getAccess().then(user => {
             user.getProject(projectId).then(project => {
