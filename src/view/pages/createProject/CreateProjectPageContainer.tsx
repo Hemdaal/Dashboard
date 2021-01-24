@@ -36,7 +36,7 @@ export default function CreateProjectPageContainer() {
 
 
     if (projectCreatedId) {
-        history.push(`/project/${projectCreatedId}`)
+        history.push(`/project/${projectCreatedId}/dashboard`)
     }
 
     return (
@@ -71,7 +71,7 @@ function useCreateProject() {
             user.createProject(projectCreateInfo.name).then(createdProject => {
                 projectCreateInfo.softwares.forEach((softwareCreateInfo, index) => {
                     createdProject.addSoftWare(softwareCreateInfo.name).then(addedSoftware => {
-                        addedSoftware.setCodeManagement(softwareCreateInfo.codeManagement).then(codeManagement => {
+                        addedSoftware.setCodeManagement(createdProject.id, softwareCreateInfo.codeManagement).then(codeManagement => {
                             //Checking for last operation.
                             if (index === projectCreateInfo.softwares.length - 1) {
                                 setProjectCreatedId(createdProject.id);

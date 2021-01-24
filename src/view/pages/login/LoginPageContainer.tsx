@@ -15,6 +15,7 @@ export default function LoginPageContainer() {
 
     if (user) {
         history.push('/')
+        return <div/>
     }
 
     return (

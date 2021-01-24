@@ -2,6 +2,7 @@ import Software from "./Software";
 import {SoftwareRepository} from "../repositories/SoftwareRepository";
 import {ProjectDashboard} from "./ProjectDashboard";
 import {ProjectDashboardRepository} from "../repositories/ProjectDashboardRepository";
+import {ProjectRepository} from "../repositories/ProjectRepository";
 
 export class Project {
     id: number;
@@ -12,7 +13,7 @@ export class Project {
         this.name = name;
     }
 
-    static from (json: any) : Project {
+    static from(json: any): Project {
         return new Project(json.id, json.name);
     }
 
@@ -27,8 +28,14 @@ export class Project {
 
     getProjectDashboard(): Promise<ProjectDashboard> {
         const projectDashboardRepository = new ProjectDashboardRepository();
-        return new Promise<ProjectDashboard>((resolve, reject) => {
-            projectDashboardRepository.getDashboard(this.id)
+        return projectDashboardRepository.getDashboard(this.id)
+    }
+
+    syncMetrics(): Promise<Boolean> {
+        return new Promise<Boolean>((resolve, reject) => {
+            new ProjectRepository().syncMetrics(this.id).then(() => {
+                resolve(true);
+            }).catch(error => reject(error))
         })
     }
 }

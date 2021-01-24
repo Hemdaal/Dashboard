@@ -9,7 +9,6 @@ export const ADD_SOFTWARE_QUERY = `
             project(projectId: $projectId) {
                 addSoftwareComponent(name: $name) {
                     id,
-                    projectId,
                     name
                 }
             }

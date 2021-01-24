@@ -4,7 +4,7 @@ import {BaseRepository} from "./BaseRepository";
 export const PROJECT_QUERY = `
     query project($projectId: Long!) {
         user {
-            project(id: $projectId) {
+            project(projectId: $projectId) {
                 id
                 name
             }
@@ -34,6 +34,16 @@ export const CREATE_PROJECT_QUERY = `
     }
 `;
 
+export const SYNC_PROJECT_QUERY = `
+    mutation setCodeManagementTool($projectId: Long!) {
+        user {
+            project(projectId: $projectId) {
+                sync
+            }
+        }
+    }
+`;
+
 export class ProjectRepository extends BaseRepository {
 
     getProjects(): Promise<Project[]> {
@@ -49,10 +59,10 @@ export class ProjectRepository extends BaseRepository {
     getProject(projectId: number): Promise<Project> {
         return new Promise<Project>((resolve, reject) => {
             this.call(PROJECT_QUERY, {projectId: projectId}).then(response => {
-                resolve(response.data.user.project.map((project: any) =>
-                    Project.from(project)
-                ));
-            }).catch(error => reject(error))
+                resolve(Project.from(response.data.user.project));
+            }).catch(error => {
+                reject(error)
+            })
         });
     }
 
@@ -61,6 +71,16 @@ export class ProjectRepository extends BaseRepository {
             this.call(CREATE_PROJECT_QUERY, {name: name}).then(response => {
                 resolve(Project.from(response.data.user.createProject))
             }).catch(error => reject(error))
+        });
+    }
+
+    syncMetrics(projectId: number): Promise<Boolean> {
+        return new Promise<Boolean>((resolve, reject) => {
+            this.call(SYNC_PROJECT_QUERY, {projectId: projectId}).then(response => {
+                resolve(true);
+            }).catch(error => {
+                reject(error)
+            })
         });
     }
 }

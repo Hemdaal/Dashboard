@@ -4,12 +4,15 @@ import {System} from "../../../models/System";
 import {useHistory} from "react-router";
 import {useParams} from 'react-router-dom'
 import {ProjectDashboard} from "../../../models/ProjectDashboard";
+import WidgetTypeDialogComponent from "../../shared/WidgetTypeDialogComponent";
+import {WidgetType} from "../../../models/widgets/WidgetType";
 
 
 export default function ProjectDashboardPageContainer() {
 
     const {projectId} = useParams();
-    const {error, loading, projectDashboard, loginFailed} = useProjectDashboard(Number(projectId));
+    const {error, loading, projectDashboard, loginFailed, addWidget} = useProjectDashboard(Number(projectId));
+    const [open, setOpen] = useState(false);
 
     const history = useHistory();
 
@@ -18,11 +21,21 @@ export default function ProjectDashboardPageContainer() {
     }
 
     return (
-        <ProjectDashboardPageComponent
-            loading={loading}
-            projectDashboard={projectDashboard}
-            onCreateProject={() => history.push('/createProject')}
-        />
+        <div>
+            <ProjectDashboardPageComponent
+                loading={loading}
+                projectDashboard={projectDashboard}
+                onCreateWidget={() => {
+                    setOpen(true)
+                }}
+            />
+            <WidgetTypeDialogComponent open={open} onClose={value => {
+                setOpen(false);
+                if (value) {
+                    addWidget(value)
+                }
+            }}/>
+        </div>
     );
 }
 
@@ -38,6 +51,8 @@ function useProjectDashboard(projectId: number) {
         setInitialized(true);
         system.getAccess().then(user => {
             user.getProject(projectId).then(project => {
+                project.syncMetrics().then(r => {
+                });
                 project.getProjectDashboard().then(projectDashboard => {
                     setLoading(false);
                     setProjectDashboard(projectDashboard);
@@ -53,5 +68,21 @@ function useProjectDashboard(projectId: number) {
         })
     }
 
-    return {error, loading, projectDashboard, loginFailed};
+    function addWidget(widgetType: WidgetType) {
+        system.getAccess().then(user => {
+            user.getProject(projectId).then(project => {
+                project.getProjectDashboard().then(projectDashboard => {
+                    projectDashboard.addWidget(widgetType).then(widget => {
+                        setLoading(false);
+                        setProjectDashboard(projectDashboard)
+                    });
+                });
+            })
+        }).catch(error => {
+            setLoading(false);
+            setError(error);
+        })
+    }
+
+    return {error, loading, projectDashboard, loginFailed, addWidget};
 }

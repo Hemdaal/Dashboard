@@ -6,6 +6,12 @@ import NavBarContainer from "../../shared/navbar/NavBarContainer";
 import LoadingComponent from "../../shared/LoadingComponent";
 import {ProjectDashboard} from "../../../models/ProjectDashboard";
 import GridLayout from 'react-grid-layout';
+import {ProjectWidget} from "../../../models/widgets/ProjectWidget";
+import {WidgetType} from "../../../models/widgets/WidgetType";
+import CommitWidgetContainer from "../../shared/widgets/CommitWidgetContainer";
+import {CommitWidget} from "../../../models/widgets/CommitWidget";
+import {ButtonBase, Card} from "@material-ui/core";
+import AddIcon from "@material-ui/core/SvgIcon/SvgIcon";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface ProjectDashboardPageProps {
     projectDashboard: ProjectDashboard | null
     loading: boolean
-    onCreateProject: () => void
+    onCreateWidget: () => void
 }
 
 export default function ProjectDashboardPageComponent(props: ProjectDashboardPageProps) {
@@ -39,31 +45,59 @@ export default function ProjectDashboardPageComponent(props: ProjectDashboardPag
             <Container component="main" maxWidth="sm">
                 <CssBaseline/>
                 {getLoadingComponent(props.loading)}
-                {getWidgetsComponent(props.projectDashboard)}
+                {getWidgetsComponent(classes, props.projectDashboard, props.onCreateWidget)}
             </Container>
         </div>
     );
 }
 
-function getWidgetsComponent(projectDashboard: ProjectDashboard | null) {
+function getWidgetsComponent(classes: any, projectDashboard: ProjectDashboard | null, onCreateWidget: () => void) {
     if (projectDashboard) {
-        return (
-            <GridLayout className="layout" cols={12} rowHeight={30} width={1200}>
-                <div key="a" data-grid={{x: 0, y: 0, w: 1, h: 2, static: true}}>a</div>
-                <div key="b" data-grid={{x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4}}>b</div>
-                <div key="c" data-grid={{x: 4, y: 0, w: 1, h: 2}}>c</div>
-            </GridLayout>
-        )
+        return (getWidgets(classes, projectDashboard.widgets, onCreateWidget))
     } else {
         return (
-            <GridLayout className="layout" cols={12} rowHeight={30} width={1200}>
-                <div key="a">a</div>
-                <div key="b">b</div>
-                <div key="c">c</div>
-            </GridLayout>
+            <div/>
         )
     }
 }
+
+function getWidgets(classes: any, widgets: ProjectWidget[], onCreateWidget: () => void) {
+    const items: any = [];
+
+    widgets.map(((value, index) => {
+        items.push(getWidgetComponent(value, index))
+    }));
+    items.push(getAddWidgetComponent(classes, widgets.length, onCreateWidget));
+
+
+    return <GridLayout className="layout">{items}</GridLayout>
+}
+
+function getWidgetComponent(widget: ProjectWidget, index: number) {
+    if (widget.type == WidgetType.COMMIT) {
+        return <CommitWidgetContainer key={index} commitWidget={widget as CommitWidget}/>
+    }
+}
+
+function getAddWidgetComponent(classes: any, index: number, onCreateWidget: () => void) {
+
+
+    return <div key={index}>
+        <Card className={classes.card}>
+            <ButtonBase
+                className={classes.cardAction}
+                onClick={event => {
+                    onCreateWidget()
+                }}>
+                <div>
+                    <AddIcon/><br/>
+                    Add Widget
+                </div>
+            </ButtonBase>
+        </Card>
+    </div>
+}
+
 
 function getLoadingComponent(loading: boolean) {
     if (loading) {
